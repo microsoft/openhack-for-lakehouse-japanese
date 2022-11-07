@@ -1,8 +1,10 @@
 # Databricks notebook source
-# MAGIC %md
-# MAGIC ## 2. データエンジニアリングパイプラインの実践
-# MAGIC Q1. データフレーム操作によりデータの書き込みを実施してください。<br>
-# MAGIC Q2. Databricksオートローダーによりデータの書き込みを実施してください。
+# MAGIC %md # Hack Day 1
+# MAGIC ## 02. データエンジニアリングパイプラインの実践(目安 10:00~11:30)
+# MAGIC ### 本ノートブックの目的：Databricksにおけるテーブル作成、データ格納処理について理解を深める
+# MAGIC Q1. Sparkデータフレーム操作によりデータの書き込みを実施してください。<br>
+# MAGIC Q2. Sparkデータフレーム操作により書き込んだデータをData Explorerとファイルレベルで確認する<br>
+# MAGIC Q3. Databricksオートローダーによりデータの書き込みを実施してください。
 
 # COMMAND ----------
 
@@ -18,7 +20,7 @@
 # COMMAND ----------
 
 src_file_path__2_1 = 'dbfs:/databricks-datasets/tpch/data-001/lineitem/'
-tgt_table_name__2_1 = 'lineitme'
+tgt_table_name__2_1 = 'lineitem'
 
 schema__2_1 = """
   L_ORDERKEY    INTEGER ,
@@ -86,6 +88,42 @@ df = df.withColumn("_src_file_path", input_file_name())
 
 # ToDo 保存先のテーブル（`tgt_table_name__2_1`）にデータをdisplay関数で表示してください。
 spark.table(tgt_table_name__2_1).display()
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC 
+# MAGIC ### Q2. Sparkデータフレーム操作により書き込んだデータをData Explorerとファイルレベルで確認する
+# MAGIC 
+# MAGIC Databricksではテーブルを作成するとカタログ（defaultではhive metastore）配下のデータベースへメタデータが登録されます<br>
+# MAGIC 登録されたテーブルをData Explorer、またファイルレベルで確認してみましょう
+# MAGIC 
+# MAGIC ToDo: 
+# MAGIC 1. 左のタブから **Data** を選択
+# MAGIC 1. Catalogsから `hive_metastore`を選択
+# MAGIC 1. DatabaseはCmd3で表示されているものを選択
+# MAGIC 1. Tablesから **lineitem** を選択する
+# MAGIC 1. 以上をSQL・Data Science & Engineering両方のモードで行い、SQLでしかできないことをまとめる
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC Answer
+# MAGIC - Catalog, Database, TableのPermissionの変更
+# MAGIC - Quick Query, Dashboardによって迅速に分析を開始できる
+# MAGIC - Deltaテーブルか否かアイコンで確認できる
+# MAGIC など
+
+# COMMAND ----------
+
+# Deltaファイルを確認します
+# トランザクションログの_delta_logとデータファイルのparquetのセットになっていることを確認する
+display(dbutils.fs.ls(f"{data_path}/database/{database}/lineitem"))
+
+# COMMAND ----------
+
+# _delta_logの中身を確認する
+dbutils.fs.head(f"{data_path}/database/{database}/lineitme/_delta_log/00000000000000000000.json")
 
 # COMMAND ----------
 

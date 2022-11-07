@@ -1,11 +1,12 @@
 # Databricks notebook source
-# MAGIC %md
-# MAGIC ## 1. メダリオンアーキテクチャに基づいたデータエンジニアリング概要
+# MAGIC %md # Hack Day 1
+# MAGIC ## 01. メダリオンアーキテクチャに基づいたデータエンジニアリング概要
+# MAGIC ### 本ノートブックの目的：[メダリオンアーキテクチャ](https://www.databricks.com/jp/glossary/medallion-architecture)について理解を深める
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### 1-1. メダリオンアーキテクチャとは
+# MAGIC ### メダリオンアーキテクチャとは
 # MAGIC 
 # MAGIC ソースシステムのデータを、Bronze、Silver、Goldの三層で管理する手法。
 # MAGIC 
@@ -18,7 +19,7 @@
 # MAGIC 参考リンク
 # MAGIC 
 # MAGIC - [Medallion Architecture | Databricks](https://databricks.com/jp/glossary/medallion-architecture)
-# MAGIC - [What's Data Lake ? Azure Data Lake best practice - Speaker Deck](https://speakerdeck.com/ryomaru0825/whats-data-lake-azure-data-lake-best-practice?slide=18)
+# MAGIC - [What's Data Lake ?](https://docs.google.com/presentation/d/1pViTuBmK4nDWg4n8_yGKbN4gOPbbFUTw/edit?usp=sharing&ouid=110902353658379996895&rtpof=true&sd=true)
 
 # COMMAND ----------
 
@@ -65,6 +66,11 @@ mermeaid_display(code)
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC ![メダリオンアーキテクチャ](https://www.databricks.com/wp-content/uploads/2022/03/delta-lake-medallion-architecture-2.jpeg)
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC 
 # MAGIC | #    | データレイヤー | 概要                                                   | 類義語             |
 # MAGIC | ---- | -------------- | ------------------------------------------------------ | ------------------ |
@@ -89,6 +95,5 @@ mermeaid_display(code)
 # MAGIC - データ利活用（消費）の目的に合致するように編成・集計したデータを保持。
 # MAGIC - ACLや行レベルセキュリティ等のデータアクセス制御を考慮することが多い。
 # MAGIC 
-# MAGIC 参考リンク
-# MAGIC 
-# MAGIC - [データ ランディング ゾーンごとに 3 つの Azure Data Lake Storage Gen2 アカウントをプロビジョニングする - Cloud Adoption Framework | Microsoft Docs](https://docs.microsoft.com/ja-jp/azure/cloud-adoption-framework/scenarios/data-management/best-practices/data-lake-services)
+# MAGIC **参考:データソースの種類について**
+# MAGIC - [Unity Catalogにおける外部ロケーションとストレージ認証情報の管理](https://qiita.com/taka_yayoi/items/18fee92365eee58e0b94)

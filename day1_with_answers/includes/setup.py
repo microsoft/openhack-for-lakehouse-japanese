@@ -5,15 +5,15 @@
 # MAGIC 
 # MAGIC ```
 # MAGIC /dbfs/FileStore
-# MAGIC ├── db_openhackason_2022
+# MAGIC ├── db_hackathon4lakehouse_2022
 # MAGIC │   ├── datasource      <- kaggleにて提供されているCSVファイルを配置
-# MAGIC │   ├── day1/{user_name}
+# MAGIC │   ├── {user_name}
 # MAGIC │   │   ├── src         <- Day1で利用するソースファイルを配置
 # MAGIC │   │   ├── database    <- Day1で利用するデータベースのディレクトリ
 # MAGIC │   │   ├── auto_loader <- Auto Loader機能で利用するディレクトリ
 # MAGIC ```
 # MAGIC 
-# MAGIC ※ 事前に`dbfs:/FileStore/db_openhackason_2022/datasource`ディレクトリに下記のデータセットを配置する必要あります。
+# MAGIC ※ 事前に`dbfs:/FileStore/db_hackathon4lakehouse_2022/datasource`ディレクトリに下記のデータセットを配置する必要あります。
 # MAGIC - [Brazilian E-Commerce Public Dataset by Olist | Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce?select=olist_customers_dataset.csv)
 
 # COMMAND ----------
@@ -23,21 +23,20 @@
 # COMMAND ----------
 
 # データベース名を変数に指定
-database_name = "db_open_hackason"
+database_name = "db_hackathon4lakehouse"
 
 dbutils.widgets.text("mode", "cleanup")
 mode = dbutils.widgets.get("mode")
 
 dbutils.widgets.text("database_name", database_name)
 
-database = f"{dbutils.widgets.get('database_name')}_day1_{user_name}"
-
+database = f"{database_name}_{user_name}"
 
 # Day1で利用する作業領域のディレクトリ
-data_path       = f'/FileStore/db_openhackason_2022/day1/{user_name}'
+data_path       = f'/FileStore/db_hackathon4lakehouse_2022/{user_name}'
 
 # Kaggleからダウンロードしたファイルを配置するディレクトリ
-datasource_dir = f'/FileStore/db_openhackason_2022/datasource'
+datasource_dir = f'/FileStore/db_hackathon4lakehouse_2022/datasource'
 
 # COMMAND ----------
 

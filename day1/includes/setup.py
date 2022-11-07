@@ -5,15 +5,15 @@
 # MAGIC 
 # MAGIC ```
 # MAGIC /dbfs/FileStore
-# MAGIC ├── db_openhackason_2022
+# MAGIC ├── db_hackathon4lakehouse_2022
 # MAGIC │   ├── datasource      <- kaggleにて提供されているCSVファイルを配置
-# MAGIC │   ├── day1/{user_name}
+# MAGIC │   ├── {user_name}
 # MAGIC │   │   ├── src         <- Day1で利用するソースファイルを配置
 # MAGIC │   │   ├── database    <- Day1で利用するデータベースのディレクトリ
 # MAGIC │   │   ├── auto_loader <- Auto Loader機能で利用するディレクトリ
 # MAGIC ```
 # MAGIC 
-# MAGIC ※ 事前に`dbfs:/FileStore/db_openhackason_2022/datasource`ディレクトリに下記のデータセットを配置する必要あります。
+# MAGIC ※ 事前に`dbfs:/FileStore/db_hackathon4lakehouse_2022/datasource`ディレクトリに下記のデータセットを配置する必要あります。
 # MAGIC - [Brazilian E-Commerce Public Dataset by Olist | Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce?select=olist_customers_dataset.csv)
 
 # COMMAND ----------
@@ -23,21 +23,20 @@
 # COMMAND ----------
 
 # データベース名を変数に指定
-database_name = "db_open_hackason"
+database_name = "db_hackathon4lakehouse"
 
 dbutils.widgets.text("mode", "cleanup")
 mode = dbutils.widgets.get("mode")
 
 dbutils.widgets.text("database_name", database_name)
 
-database = f"{dbutils.widgets.get('database_name')}_day1_{user_name}"
-
+database = f"{database_name}_{user_name}"
 
 # Day1で利用する作業領域のディレクトリ
-data_path       = f'/FileStore/db_openhackason_2022/day1/{user_name}'
+data_path       = f'/FileStore/db_hackathon4lakehouse_2022/{user_name}'
 
 # Kaggleからダウンロードしたファイルを配置するディレクトリ
-datasource_dir = f'/FileStore/db_openhackason_2022/datasource'
+datasource_dir = f'/FileStore/db_hackathon4lakehouse_2022/datasource'
 
 # COMMAND ----------
 
@@ -146,44 +145,29 @@ if mode == 'c_1':
     put_csv_files(src_file_path__c_1__second, csv_data)
 
 if mode == 'c_2':
-    # 初回目データの配置
-    origin_file_path__c_2 = f'{datasource_dir}/olist_sellers_dataset.csv'
-    src_file_dir__c_2 = f'{data_path}/src/c_2'
+    import os
+    # dlt用のディレクトリ作成
+    orders_dir = f"{data_path}/dlt/orders/"
+    order_items_dir = f"{data_path}/dlt/order_items/"
     
-    schema = '''
-        `seller_id` STRING,
-        `seller_zip_code_prefix` INT,
-        `seller_city` STRING,
-        `seller_state` STRING
-    '''
-    df = (spark
-              .read
-              .format('csv')
-              .schema(schema)
-              .option('header', 'true')
-              .load(origin_file_path__c_2)
-         )
+    os.makedirs(orders_dir, exist_ok=True)
+    os.makedirs(order_items_dir, exist_ok=True)
     
-    from pyspark.sql.functions import col,struct,when
-    df = (df
-          .withColumn("seller",
-              struct(
-                  col("seller_zip_code_prefix").alias("zip_code_prefix"),
-                  col("seller_city").alias("city"),
-                  col("seller_state").alias("state"),
-              ),
-           )
-          .select('seller_id','seller')
-     )
-    # jsonファイルとして書き込み
-    (df.coalesce(1)
-         .write
-         .format("json")
-         .mode("overwrite")
-         .save(src_file_dir__c_2)
-    )
+    # csvデータの配置
+    source_path_orders = f"{datasource_dir}/olist_orders_dataset.csv"
+    source_path_order_items = f"{datasource_dir}/olist_order_items_dataset.csv"
     
+    dbutils.fs.cp(source_path_orders, orders_dir+"olist_orders_dataset.csv")
+    dbutils.fs.cp(source_path_order_items, order_items_dir+"olist_order_items_dataset.csv")
 
 if mode == "cleanup":
     spark.sql(f"DROP DATABASE IF EXISTS {database} CASCADE")
     dbutils.fs.rm(data_path, True)
+
+# COMMAND ----------
+
+
+
+# COMMAND ----------
+
+

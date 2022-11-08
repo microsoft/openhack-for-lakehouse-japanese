@@ -1,0 +1,10 @@
+az login
+
+
+# sub
+az account set --subscription $AZURE_SUBSCRIPTION_ID1
+
+az deployment sub create --location $LOCATION --template-file infra/main.bicep --parameters @infra/params_sand1.json
+
+az account set --subscription $AZURE_SUBSCRIPTION_ID2
+az deployment sub create --location $LOCATION --template-file infra/main.bicep --parameters @infra/params_sand2.json

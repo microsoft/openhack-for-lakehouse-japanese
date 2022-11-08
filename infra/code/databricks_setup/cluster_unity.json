@@ -1,0 +1,28 @@
+{
+    "autoscale": {
+        "min_workers": 2,
+        "max_workers": 4
+    },
+    "cluster_name": "openhack_UnityCatalog",
+    "spark_version": "11.3.x-scala2.12",
+    "spark_conf": {
+        "spark.databricks.dataLineage.enabled": "true",
+        "spark.databricks.delta.preview.enabled": "true"
+    },
+    "azure_attributes": {
+        "first_on_demand": 1,
+        "availability": "SPOT_WITH_FALLBACK_AZURE",
+        "spot_bid_max_price": -1
+    },
+    "node_type_id": "Standard_E4ds_v4",
+    "driver_node_type_id": "Standard_E4ds_v4",
+    "ssh_public_keys": [],
+    "custom_tags": {},
+    "spark_env_vars": {},
+    "autotermination_minutes": 30,
+    "enable_elastic_disk": true,
+    "cluster_source": "UI",
+    "init_scripts": [],
+    "data_security_mode": "USER_ISOLATION",
+    "runtime_engine": "PHOTON"
+}

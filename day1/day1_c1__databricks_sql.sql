@@ -17,11 +17,6 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC <img src='https://github.com/naoyaabe-db/aws-databricks-hackathon-jp-20221006/raw/main/hackathon-for-lakehouse/dbsql-first.png' width='1000' />
-
--- COMMAND ----------
-
--- MAGIC %md
 -- MAGIC ### Q1. Databricks SQLにてクエリを作成してください。
 -- MAGIC - **`sales_history_gold`** のクエリをEditorへ入力し、Run ALLで実行結果を確認する
 -- MAGIC - 実行結果下のタブ **`Edit visualization`** から折れ線グラフを選択する
@@ -29,12 +24,12 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC <img src='https://github.com/naoyaabe-db/aws-databricks-hackathon-jp-20221006/raw/main/hackathon-for-lakehouse/dbsql-third.png' width='1000' />
+-- MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/hackathon/dbsql-third.png' width='1000' />
 
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC <img src='https://github.com/naoyaabe-db/aws-databricks-hackathon-jp-20221006/raw/main/hackathon-for-lakehouse/dbsql-fourth.png' width='1000' />
+-- MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/hackathon/dbsql-fourth.png' width='1000' />
 
 -- COMMAND ----------
 
@@ -57,9 +52,9 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC <img src='https://github.com/naoyaabe-db/aws-databricks-hackathon-jp-20221006/raw/main/hackathon-for-lakehouse/dbsql-second.png' width='800' />
+-- MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/hackathon/dbsql-second.png' width='800' />
 
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC <img src='https://github.com/naoyaabe-db/aws-databricks-hackathon-jp-20221006/raw/main/hackathon-for-lakehouse/dbsql-fifth.png' width='800' />
+-- MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/hackathon/dbsql-fifth.png' width='800' />

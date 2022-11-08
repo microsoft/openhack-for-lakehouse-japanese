@@ -23,48 +23,6 @@
 
 # COMMAND ----------
 
-def mermeaid_display(code):
-    mermeid_html =f"""
-                    <html>
-                        <head>
-                            <link rel="stylesheet" href="https://unpkg.com/mermaid/dist/mermaid.min.css">
-                            <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
-                            <script>mermaid.initialize({{startOnLoad:true,theme: 'neutral'}});</script>
-                        </head>
-                        <body>
-                            <div class="mermaid">
-                                {code}
-                            </div>
-                        </body>
-                    </html>
-                    """
-    displayHTML(mermeid_html)
-    
-code = """
-graph LR
-    s010[source]
-    r010[(Bronze)]
-    e002[(Silver)]
-    c002[( Gold )]
-
-    s010 ==> r010 ==> e002 ==> c002
-
-    subgraph メダリオンアーキテクチャ
-        r010
-        e002
-        c002
-    end
-
-  classDef done fill:#aaa;
-  classDef naosim fill:#faa;
-  class T0,T1,T3 done;
-  class T2 naosim;
-"""
-
-mermeaid_display(code)
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC ![メダリオンアーキテクチャ](https://www.databricks.com/wp-content/uploads/2022/03/delta-lake-medallion-architecture-2.jpeg)
 
@@ -96,4 +54,4 @@ mermeaid_display(code)
 # MAGIC - ACLや行レベルセキュリティ等のデータアクセス制御を考慮することが多い。
 # MAGIC 
 # MAGIC **参考:データソースの種類について**
-# MAGIC - [Unity Catalogにおける外部ロケーションとストレージ認証情報の管理](https://qiita.com/taka_yayoi/items/18fee92365eee58e0b94)
+# MAGIC - [Unity Catalogにおける外部ロケーション](https://learn.microsoft.com/ja-jp/azure/databricks/spark/latest/spark-sql/language-manual/sql-ref-external-locations)

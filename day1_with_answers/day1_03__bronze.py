@@ -9,7 +9,7 @@
 
 # COMMAND ----------
 
-# MAGIC %run ./includes/setup $mode="3"
+# MAGIC %run ./includes/setup $mode="c_2"
 
 # COMMAND ----------
 
@@ -400,7 +400,7 @@ df = (spark
         .read
         .format('json')
         .option('primitivesAsString', True)
-        .load(f"{datasource_dir}/olist_sellers_dataset.json")
+        .load(src_file_dir__c_2)
      )
 
 # データフレームのスキーマを表示します
@@ -483,7 +483,7 @@ schema
 # MAGIC -- ToDo : testレコードがWRITEされていないバージョンに戻す
 # MAGIC -- https://qiita.com/taka_yayoi/items/3b2095825a7e48b86f69
 # MAGIC -- <<FILL IN>>
-# MAGIC RESTORE TABLE customers_bronze TO VERSION AS OF ０
+# MAGIC RESTORE TABLE customers_bronze TO VERSION AS OF 0
 
 # COMMAND ----------
 

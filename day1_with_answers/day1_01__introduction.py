@@ -96,4 +96,4 @@ mermeaid_display(code)
 # MAGIC - ACLや行レベルセキュリティ等のデータアクセス制御を考慮することが多い。
 # MAGIC 
 # MAGIC **参考:データソースの種類について**
-# MAGIC - [Unity Catalogにおける外部ロケーションとストレージ認証情報の管理](https://qiita.com/taka_yayoi/items/18fee92365eee58e0b94)
+# MAGIC - [Unity Catalogにおける外部ロケーション](https://learn.microsoft.com/ja-jp/azure/databricks/spark/latest/spark-sql/language-manual/sql-ref-external-locations)

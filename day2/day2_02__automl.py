@@ -16,7 +16,7 @@
 
 # MAGIC %md-sandbox ### DatabricksのAuto MLと`item_sales`テーブルの使用
 # MAGIC 
-# MAGIC <img style="float: right" width="600" src='https://github.com/naoyaabe-db/aws-databricks-hackathon-jp-20221006/raw/main/hackathon-for-lakehouse/automl-first.png'>
+# MAGIC <img style="float: right" width="600" src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/hackathon/automl-first.png'>
 # MAGIC 
 # MAGIC Auto MLは、「Machine Learning(機械学習)」メニュースペースで利用できます。<br>
 # MAGIC (Machine Learning メニューを選択し、ホーム画面で AutoMLを選択してください)
@@ -39,7 +39,7 @@
 
 # MAGIC %md ## 実験の経過や結果については、MLflow のExperiment画面で確認可能です。
 # MAGIC 
-# MAGIC <img src='https://github.com/naoyaabe-db/aws-databricks-hackathon-jp-20221006/raw/main/hackathon-for-lakehouse/automl-second.png' />
+# MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/hackathon/automl-second.png' />
 
 # COMMAND ----------
 
@@ -48,7 +48,7 @@
 # MAGIC - AutoMLは、シングルノード上で実験が行われるため、メモリサイズが小さいと学習できるデータセット数が小さくなります。そのためメモリ搭載の多いインスタンスを選択してください。 
 # MAGIC - 上図(MLflow Experiment UI)の Alertタブを確認ください。
 # MAGIC 
-# MAGIC <img src='https://github.com/naoyaabe-db/aws-databricks-hackathon-jp-20221006/raw/main/additional-images/tutoml_alert.png' />
+# MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/additional-images/tutoml_alert.png' />
 
 # COMMAND ----------
 
@@ -58,7 +58,7 @@
 
 # MAGIC %md 
 # MAGIC 表示された結果にチェックボックスをつけて、compareを押してください
-# MAGIC <img src='https://github.com/naoyaabe-db/aws-databricks-hackathon-jp-20221006/raw/main/hackathon-for-lakehouse/automl-compare.png' />
+# MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/hackathon/automl-compare.png' />
 
 # COMMAND ----------
 
@@ -68,7 +68,7 @@
 
 # MAGIC %md 
 # MAGIC 
-# MAGIC <img src='https://github.com/naoyaabe-db/aws-databricks-hackathon-jp-20221006/raw/main/images/mlflow_comapre.jpg' />
+# MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/images/mlflow_comapre.jpg' />
 
 # COMMAND ----------
 
@@ -78,7 +78,7 @@
 
 # MAGIC %md 
 # MAGIC 
-# MAGIC <img src='https://github.com/naoyaabe-db/aws-databricks-hackathon-jp-20221006/raw/main/hackathon-for-lakehouse/automl-best.png' />
+# MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/hackathon/automl-best.png' />
 
 # COMMAND ----------
 
@@ -87,7 +87,7 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC <img src='https://github.com/naoyaabe-db/aws-databricks-hackathon-jp-20221006/raw/main/hackathon-for-lakehouse/automl-rerun.png' />
+# MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/hackathon/automl-rerun.png' />
 
 # COMMAND ----------
 
@@ -97,17 +97,17 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC <img src='https://github.com/naoyaabe-db/aws-databricks-hackathon-jp-20221006/raw/main/images/country_holidays2.jpg' />
+# MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/images/country_holidays2.jpg' />
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC <img src='https://github.com/naoyaabe-db/aws-databricks-hackathon-jp-20221006/raw/main/images/mlflow_logparam.jpg' />
+# MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/images/mlflow_logparam.jpg' />
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC <img src='https://github.com/naoyaabe-db/aws-databricks-hackathon-jp-20221006/raw/main/hackathon-for-lakehouse/automl-rerun.png' />
+# MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/hackathon/automl-rerun.png' />
 
 # COMMAND ----------
 
@@ -117,9 +117,9 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC <img src='https://github.com/naoyaabe-db/aws-databricks-hackathon-jp-20221006/raw/main/hackathon-for-lakehouse/automl-modelcompare.png' />
+# MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/hackathon/automl-modelcompare.png' />
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC <img src='https://github.com/naoyaabe-db/aws-databricks-hackathon-jp-20221006/raw/main/hackathon-for-lakehouse/automl-result.png' />
+# MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/hackathon/automl-result.png' />

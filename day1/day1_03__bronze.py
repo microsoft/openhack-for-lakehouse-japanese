@@ -21,10 +21,10 @@
 # MAGIC %md
 # MAGIC ToDO 下記のドキュメントを参考に、設定すべきテーブルプロパティ、および、データエンジニアリング実施後に行うべき処理を、それぞれ3つ以上記載してください。
 # MAGIC 
-# MAGIC - [ファイル管理を使用してパフォーマンスを最適化する](https://docs.databricks.com/delta/file-mgmt.html)
-# MAGIC - [自動最適化](https://docs.databricks.com/optimizations/auto-optimize.html)
-# MAGIC - [ANALYZE TABLE](https://docs.databricks.com/sql/language-manual/sql-ref-syntax-aux-analyze-table.html)
-# MAGIC - [VACUUM](https://docs.databricks.com/spark/latest/spark-sql/language-manual/delta-vacuum.html)
+# MAGIC - [ファイル管理を使用してパフォーマンスを最適化する - Azure Databricks | Microsoft Docs](https://docs.microsoft.com/ja-jp/azure/databricks/delta/optimizations/file-mgmt)
+# MAGIC - [自動最適化 - Azure Databricks | Microsoft Docs](https://docs.microsoft.com/ja-jp/azure/databricks/delta/optimizations/auto-optimize)
+# MAGIC - [ANALYZE TABLE - Azure Databricks | Microsoft Docs](https://docs.microsoft.com/ja-jp/azure/databricks/spark/latest/spark-sql/language-manual/sql-ref-syntax-aux-analyze-table)
+# MAGIC - [VACUUM - Azure Databricks | Microsoft Docs](https://docs.microsoft.com/ja-jp/azure/databricks/spark/latest/spark-sql/language-manual/delta-vacuum)
 # MAGIC - [What's the best practice on running ANALYZE on Delta Tables for query performance optimization? (databricks.com)](https://community.databricks.com/s/question/0D53f00001GHVicCAH/whats-the-best-practice-on-running-analyze-on-delta-tables-for-query-performance-optimization)
 
 # COMMAND ----------
@@ -49,7 +49,7 @@
 # MAGIC 今回利用するデータセットの関連図です。
 # MAGIC 
 # MAGIC <br>
-# MAGIC <img src='https://github.com/naoyaabe-db/aws-databricks-hackathon-jp-20221006/raw/main/images/olist_data_relation.png' width='800' />
+# MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/images/olist_data_relation.png' width='800' />
 # MAGIC </br>
 # MAGIC 
 # MAGIC <br>
@@ -75,7 +75,7 @@
 # MAGIC  1. 1.で作成したspark dataframeはSQLの構文で直接参照できないため　**`tmp_customers`** という名前のtemporary viewを作成する
 # MAGIC  1. CREATE OR REPLACE TABLE AS構文によって2.で作成したviewを参照し　**`customers_bronze`** テーブルを作成する
 # MAGIC 
-# MAGIC  - [VIEW/TEMPORARY VIEW](https://docs.databricks.com/spark/latest/spark-sql/language-manual/sql-ref-syntax-ddl-create-view.html)
+# MAGIC  - [VIEW/TEMPORARY VIEW](https://learn.microsoft.com/en-us/azure/databricks/sql/language-manual/sql-ref-syntax-ddl-create-view)
 # MAGIC  - [spark dataframeからtemporary viewを作成する](https://spark.apache.org/docs/3.1.3/api/python/reference/api/pyspark.sql.DataFrame.createOrReplaceTempView.html)
 # MAGIC  - [DatabricksにてCTAS（CREATE TABLE AS SELECT）を利用する方法](https://qiita.com/manabian/items/6c960c1544c53977a316)
 
@@ -114,7 +114,7 @@ df.<<FILL-IN>>
 # MAGIC 
 # MAGIC -- CTASでolist_customers_dataset_bronzeを作成する
 # MAGIC -- optimizeWrite、および、autoCompactをTrueに設定
-# MAGIC -- https://docs.databricks.com/optimizations/auto-optimize.html
+# MAGIC -- https://learn.microsoft.com/ja-jp/azure/databricks/optimizations/auto-optimize
 # MAGIC 
 # MAGIC /* TODO　FILL-IN */
 

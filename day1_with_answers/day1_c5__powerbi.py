@@ -2,7 +2,8 @@
 # MAGIC %md # Hack Day 1
 # MAGIC ## Challenge5. Microsoft Power BI と Azure Databricks の連携
 # MAGIC ### 本ノートブックの目的：Power BI レポートから Databricks SQL ウェアハウスに接続して視覚化する方法を学ぶ
-# MAGIC - Q1.
+# MAGIC - Q1. Power BI Desktop から Databricks SQL ウェアハウスに接続してください
+# MAGIC - Q2. Power BI Desktop でレポートを作成してください
 
 # COMMAND ----------
 
@@ -13,6 +14,7 @@
 # MAGIC   - コーチが利用する端末の OS が Windows 以外の場合は Windows 端末を持つ他チームのコーチにデモを依頼してください
 # MAGIC - 受講者も Power BI Desktop が利用可能であれば、本ノートブックの内容を実施頂くことが可能です
 # MAGIC   - 実施は任意で、コーチによるデモを閲覧するのみでも全く問題ありません
+# MAGIC   - Power BI Desktop の最新版は https://powerbi.microsoft.com/ja-jp/downloads/ からダウンロードできます
 
 # COMMAND ----------
 
@@ -67,4 +69,63 @@
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC ## Q1. Power BI Desktop から Databricks SQL ウェアハウスに接続してください
+# MAGIC Databricks SQL の画面から SQL ウェアハウスへの接続情報のみが定義された Power BI レポート用のファイル (拡張子 `pbids`) を数クリックでダウンロードできます。この PBIDS ファイルを使って SQL ウェアハウスに接続していきます。
 
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC - Databricks SQL の「SQL ウェアハウス」のページにアクセスします
+# MAGIC - 既存の SQL ウェアハウスをクリックし「接続の詳細」タブにアクセスします
+# MAGIC - 画面下部にある「Power BI」アイコンをクリックします
+# MAGIC 
+# MAGIC <img src="https://raw.githubusercontent.com/nakazax/oh-lakehouse-assets/main/images/day1_c5__powerbi/sql_warehouse_powerbi.png" width="800">
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC - 「パートナーに接続ダイアログ」が表示されるので「接続ファイルをダウンロード」をクリックします
+# MAGIC 
+# MAGIC <img src="https://raw.githubusercontent.com/nakazax/oh-lakehouse-assets/main/images/day1_c5__powerbi/download_pbids.png" width="600">
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC - PBIDS ファイルを開くための前提条件を確認するダイアログが表示されるので、前提条件を問題なく満たしている場合は「閉じる」をクリックします
+# MAGIC 
+# MAGIC <img src="https://raw.githubusercontent.com/nakazax/oh-lakehouse-assets/main/images/day1_c5__powerbi/prereq_pbids.png" width="600">
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC - ダウンロードされた PBIDS ファイルを開きます。Power BI Desktop が起動するはずです
+# MAGIC - PBIDS ファイルの初回オープン時に以下キャプチャのような Azure Databricks 接続の認証情報を求めるダイアログが表示されます。個人用アクセス トークンなどが選べますが、ここでは Azure Active Directory を認証情報として用います
+# MAGIC - Azure Active Directory のサインインが正常に完了したら「接続」ボタンをクリックします
+# MAGIC 
+# MAGIC <img src="https://raw.githubusercontent.com/nakazax/oh-lakehouse-assets/main/images/day1_c5__powerbi/powerbi_connect_adb.png" width="800">
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## Q2. Power BI Desktop でレポートを作成してください
+# MAGIC これまでの演習で Databricks に作成済みの `sales_history_gold` テーブルを使ってレポートを作成します。
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC - ナビゲーター画面で `sales_history_gold` テーブルを選択して「読み込み」をクリックします
+# MAGIC 
+# MAGIC <img src="https://raw.githubusercontent.com/nakazax/oh-lakehouse-assets/main/images/day1_c5__powerbi/powerbi_navigator.png" width="800">
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC - 折れ線グラフをプロット、X 軸に `purchase_date` を、Y 軸に `sales の合計` を選択します
+# MAGIC 
+# MAGIC <img src="https://raw.githubusercontent.com/nakazax/oh-lakehouse-assets/main/images/day1_c5__powerbi/powerbi_line_graph.png" width="800">
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC これで本ノートブックの演習は完了です。

@@ -8,13 +8,13 @@
 
 -- COMMAND ----------
 
--- MAGIC %run ./includes/setup $mode="c_3"
+-- MAGIC %run ./includes/setup $mode="c_1"
 
 -- COMMAND ----------
 
 -- MAGIC %python
 -- MAGIC # 現在のデータベースを改めて確認
--- MAGIC spark.catalog.currentDatabase()
+-- MAGIC print(spark.sql("SELECT current_database()").first()[0])
 
 -- COMMAND ----------
 
@@ -60,7 +60,3 @@
 
 -- MAGIC %md
 -- MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/hackathon/dbsql-fifth.png' width='800' />
-
--- COMMAND ----------
-
-

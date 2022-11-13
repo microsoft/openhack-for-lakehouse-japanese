@@ -5,22 +5,14 @@
 
 -- COMMAND ----------
 
--- MAGIC %python
--- MAGIC def display_slide(slide_id, slide_number):
--- MAGIC   displayHTML(f"""
--- MAGIC   <div style="width:1150px; margin:auto">
--- MAGIC   <iframe
--- MAGIC     src="https://docs.google.com/presentation/d/{slide_id}/embed?slide={slide_number}"
--- MAGIC     frameborder="0"
--- MAGIC     width="1150"
--- MAGIC     height="683"
--- MAGIC   ></iframe></div>
--- MAGIC   """)
-
--- COMMAND ----------
-
--- MAGIC %python
--- MAGIC display_slide("1ShJUFjNfkPvn5QjG7dDFi6nn66cQZfVMs1cjjzErEIE", 6)
+-- MAGIC %md-sandbox
+-- MAGIC <div style="width:1150px; margin:auto">
+-- MAGIC <iframe
+-- MAGIC   src="https://docs.google.com/presentation/d/1ShJUFjNfkPvn5QjG7dDFi6nn66cQZfVMs1cjjzErEIE/embed?slide=6"
+-- MAGIC   frameborder="0"
+-- MAGIC   width="1150"
+-- MAGIC   height="683"
+-- MAGIC ></iframe></div>
 
 -- COMMAND ----------
 
@@ -36,67 +28,81 @@
 -- MAGIC %md
 -- MAGIC 
 -- MAGIC 
--- MAGIC ### dlt_orders_bronze
+-- MAGIC ### dlt_olist_orders_dataset_bronze
 -- MAGIC 
--- MAGIC  **`dlt_orders_bronze`** は、 */dbfs/FileStore/db_hackathon4lakehouse_2022/datasource/dlt/orders/* にあるデータセットからcsvデータを段階的に取り込みます。
+-- MAGIC  **`dlt_olist_orders_dataset_bronze`** は、 _dbfs:/FileStore/db_hackathon4lakehouse_2022/datasource/olist_orders_dataset*_ という名称のcsvデータを段階的に取り込みます。
 -- MAGIC 
 -- MAGIC （構造化ストリーミングと同じ処理モデルを使用した）<a herf="https://docs.databricks.com/spark/latest/structured-streaming/auto-loader.html" target="_blank">Auto Loader</a>を介した増分処理は、以下のように宣言に  **`STREAMING`**  キーワードを追加する必要があります。  **`cloud_files()`** メソッドを使うと、Auto LoaderをSQLでネイティブに使用できます。  **`cloud_files()`** メソッドは、次の位置パラメーターを取ります。
 -- MAGIC * 上記の通り、ソースの場所
 -- MAGIC * ソースデータフォーマット。今回の場合はJSONを指す
 -- MAGIC * 任意読み取りオプションの配列。 この場合、 **`cloudFiles.inferColumnTypes`** を **`true`** に設定します。
 -- MAGIC * 任意読み取りオプションの配列。 この場合、 **`cloudFiles.overwriteSchema`** を **`true`** に設定します。
--- MAGIC * 任意読み取りオプションの配列。 この場合、 **`cloudFiles.schemaHints`** を **day1_03__bronze Cmd 16** で設定したスキーマに設定します。
 
 -- COMMAND ----------
 
-CREATE OR REFRESH STREAMING LIVE TABLE dlt_orders_bronze AS
+CREATE
+OR REFRESH STREAMING LIVE TABLE dlt_olist_orders_dataset_bronze AS
 SELECT
-  *
+  *,
+  _metadata.file_path AS _datasource,
+  _metadata.file_modification_time AS _ingest_timestamp
 FROM
-  cloud_files("/FileStore/db_hackathon4lakehouse_2022/datasource/dlt/orders/", "csv",
-  map(
-    "cloudFiles.inferColumnTypes", "true",
-    "overwriteSchema", "true",
-    "cloudFiles.schemaHints",
-    " `order_id` STRING,
+  cloud_files(
+    "/FileStore/db_hackathon4lakehouse_2022/datasource/olist_orders_dataset*.csv",
+    "csv",
+    map(
+      "cloudFiles.inferColumnTypes",
+      "false",
+      "overwriteSchema",
+      "true",
+      "cloudFiles.schemaHints",
+      " `order_id` STRING,
       `customer_id` STRING,
       `order_status` STRING,
-      `order_purchase_timestamp` TIMESTAMP,
-      `order_approved_at` TIMESTAMP,
-      `order_delivered_carrier_date` TIMESTAMP,
-      `order_delivered_customer_date` TIMESTAMP,
-      `order_estimated_delivery_date` TIMESTAMP,
-      `_rescued_data` STRING "
+      `order_purchase_timestamp` STRING,
+      `order_approved_at` STRING,
+      `order_delivered_carrier_date` STRING,
+      `order_delivered_customer_date` STRING,
+      `order_estimated_delivery_date` STRING,
+      `_rescued_data` STRING"
       )
-   );
+  );
 
 -- COMMAND ----------
 
 -- MAGIC %md
 -- MAGIC 
 -- MAGIC 
--- MAGIC ### dlt_order_items_bronze
+-- MAGIC ### dlt_olist_order_items_dataset_bronze
 -- MAGIC 
--- MAGIC  **`dlt_order_items_bronze`** は、 */dbfs/FileStore/db_hackathon4lakehouse_2022/datasource/dlt/order_items/* にあるデータセットからcsvデータを段階的に取り込みます。
+-- MAGIC  **`dlt_olist_order_items_dataset_bronze`** は、 _dbfs:/FileStore/db_hackathon4lakehouse_2022/datasource/olist_order_items_dataset*_ という名称のcsvデータを段階的に取り込みます。
 
 -- COMMAND ----------
 
-CREATE OR REFRESH STREAMING LIVE TABLE dlt_order_items_bronze AS
+CREATE
+OR REFRESH STREAMING LIVE TABLE dlt_olist_order_items_dataset_bronze AS
 SELECT
-  *
+  *,
+  _metadata.file_path AS _datasource,
+  _metadata.file_modification_time AS _ingest_timestamp
 FROM
-  cloud_files("/FileStore/db_hackathon4lakehouse_2022/datasource/dlt/order_items/", "csv", 
-  map("cloudFiles.inferColumnTypes", "true",
-    "overwriteSchema", "true",
-  "cloudFiles.schemaHints", 
-  " `order_id` STRING,
-    `order_item_id` INT,
-    `product_id` STRING,
-    `seller_id` STRING,
-    `shipping_limit_date` STRING,
-    `price` DOUBLE,
-    `freight_value` DOUBLE,
-    `_rescued_data` STRING "
+  cloud_files(
+    "/FileStore/db_hackathon4lakehouse_2022/datasource/olist_order_items_dataset*.csv",
+    "csv",
+    map(
+      "cloudFiles.inferColumnTypes",
+      "false",
+      "overwriteSchema",
+      "true",
+      "cloudFiles.schemaHints", 
+      " `order_id` STRING,
+      `order_item_id` INT,
+      `product_id` STRING,
+      `seller_id` STRING,
+      `shipping_limit_date` STRING,
+      `price` DOUBLE,
+      `freight_value` DOUBLE,
+      `_rescued_data` STRING"
     )
   );
 
@@ -113,9 +119,9 @@ FROM
 -- MAGIC %md
 -- MAGIC 
 -- MAGIC 
--- MAGIC ### dlt_order_items_silver
+-- MAGIC ### dlt_olist_order_items_dataset_silver
 -- MAGIC 
--- MAGIC  **`dlt_order_items_silver`** は、 **`dlt_order_items_bronze`** をソースに作成します
+-- MAGIC  **`dlt_olist_order_items_dataset_silver`** は、 **`dlt_olist_order_items_dataset_bronze`** をソースに作成します
 -- MAGIC  
 -- MAGIC #### DLTテーブルとビューの参照（References to DLT Tables and Views）
 -- MAGIC 他のDLTテーブルとビューへの参照は、常に **`live.`** プレフィックスを含みます。 ターゲットのデータベース名はランタイム時に自動で置き換えられるため、DEV/QA/PROD環境間でのパイプラインの移行が簡単に行えます。
@@ -126,21 +132,56 @@ FROM
 
 -- COMMAND ----------
 
-CREATE OR REFRESH STREAMING LIVE TABLE dlt_order_items_silver AS (
+CREATE
+OR REFRESH LIVE TABLE dlt_olist_order_items_dataset_silver AS (
+  with slv_records (
+    SELECT
+      `order_id`,
+      `order_item_id`,
+      `product_id`,
+      `seller_id`,
+      MAX(_ingest_timestamp) AS max_ingest_timestamp
+    FROM
+      LIVE.dlt_olist_order_items_dataset_bronze
+    GROUP BY
+      `order_id`,
+      `order_item_id`,
+      `product_id`,
+      `seller_id`
+  )
   SELECT
-    *,
-    price + freight_value product_sales
+    brz.`order_id`,
+    brz.`order_item_id` :: INT,
+    brz.`product_id`,
+    brz.`seller_id`,
+    brz.`shipping_limit_date`,
+    brz.`price` :: DOUBLE,
+    brz.`freight_value` :: DOUBLE,
+    brz._ingest_timestamp
   FROM
-    STREAM(LIVE.dlt_order_items_bronze)
+    LIVE.dlt_olist_order_items_dataset_bronze AS brz
+    INNER JOIN slv_records AS slv ON brz.order_id = slv.order_id
+    AND brz.order_item_id = slv.order_item_id
+    AND brz.product_id = slv.product_id
+    AND brz.seller_id = slv.seller_id
+    AND brz._ingest_timestamp = slv.max_ingest_timestamp 
+    QUALIFY ROW_NUMBER() OVER(
+      PARTITION BY brz.`order_id`,
+      brz.`order_item_id`,
+      brz.`product_id`,
+      brz.`seller_id`
+      ORDER BY
+        brz._ingest_timestamp DESC
+    ) = 1 -- 一意性保証を実施
 )
 
 -- COMMAND ----------
 
 -- MAGIC %md
 -- MAGIC 
--- MAGIC ### dlt_orders_silver
+-- MAGIC ### dlt_olist_orders_dataset_silver
 -- MAGIC 
--- MAGIC  **`dlt_orders_silver`** は、 **`dlt_orders_bronze`** をソースに作成します
+-- MAGIC  **`dlt_olist_orders_dataset_silver`** は、 **`dlt_olist_orders_dataset_bronze`** をソースに作成します
 -- MAGIC 
 -- MAGIC この宣言は多くの新しい概念を導入します。
 -- MAGIC 
@@ -158,41 +199,66 @@ CREATE OR REFRESH STREAMING LIVE TABLE dlt_order_items_silver AS (
 
 -- COMMAND ----------
 
-CREATE OR REFRESH STREAMING LIVE TABLE dlt_orders_silver(
-  CONSTRAINT valid_delivered_date EXPECT 
-    (order_delivered_carrier_date IS NOT NULL) ON VIOLATION DROP ROW)
-AS (
+CREATE
+OR REFRESH LIVE TABLE dlt_olist_orders_dataset_silver (
+  CONSTRAINT valid_delivered_date EXPECT (order_delivered_carrier_date IS NOT NULL) ON VIOLATION DROP ROW
+) AS (
+  with slv_records (
+    SELECT
+      order_id,
+      MAX(_ingest_timestamp) AS max_ingest_timestamp
+    FROM
+      LIVE.dlt_olist_orders_dataset_bronze
+    GROUP BY
+      order_id
+  )
   SELECT
-    *,
-    CAST(
-      date_format(order_purchase_timestamp, 'yyyy-MM-dd') AS DATE
-    ) purchase_date
+    brz.`order_id`,
+    brz.`customer_id`,
+    brz.`order_status`,
+    brz.`order_purchase_timestamp` :: TIMESTAMP,
+    brz.`order_approved_at` :: TIMESTAMP,
+    brz.`order_delivered_carrier_date` :: TIMESTAMP,
+    brz.`order_delivered_customer_date` :: TIMESTAMP,
+    brz.`order_estimated_delivery_date` :: TIMESTAMP,
+    brz._ingest_timestamp
   FROM
-    STREAM(LIVE.dlt_orders_bronze)
-  WHERE
-    order_status = 'delivered' OR order_status = 'shipped'
+    LIVE.dlt_olist_orders_dataset_bronze AS brz
+    INNER JOIN slv_records AS slv ON brz.order_id = slv.order_id
+    AND brz._ingest_timestamp = slv.max_ingest_timestamp
+    QUALIFY ROW_NUMBER() OVER(
+      PARTITION BY brz.order_id
+      ORDER BY
+        brz._ingest_timestamp DESC
+    ) = 1 -- 一意性保証を実施
 )
 
 -- COMMAND ----------
 
 -- MAGIC %md
 -- MAGIC 
--- MAGIC ### dlt_order_info_silver
+-- MAGIC ### dlt_order_info_gold
 -- MAGIC 
--- MAGIC  **`dlt_order_info_silver`** は、 **`dlt_orders_silver`** と **`dlt_order_items_silver`** をソースに作成します
+-- MAGIC  **`dlt_order_info_gold`** は、 **`dlt_olist_orders_dataset_silver`** と **`dlt_olist_order_items_dataset_silver`** をソースに作成します
 
 -- COMMAND ----------
 
-CREATE OR REFRESH STREAMING LIVE TABLE dlt_order_info_silver AS (
+CREATE
+OR REFRESH LIVE TABLE dlt_order_info_gold AS (
   SELECT
     a.order_id,
     seller_id,
     product_id,
-    purchase_date,
-    product_sales
+    CAST(
+      date_format(order_purchase_timestamp, 'yyyy-MM-dd') AS DATE
+    ) AS purchase_date,
+    price + freight_value AS product_sales
   FROM
-    STREAM(LIVE.dlt_orders_silver) a
-    JOIN STREAM(LIVE.dlt_order_items_silver) b ON a.order_id = b.order_id
+    LIVE.dlt_olist_orders_dataset_silver a
+    LEFT OUTER JOIN LIVE.dlt_olist_order_items_dataset_silver b ON a.order_id = b.order_id
+  WHERE
+    a.order_status IN ('delivered', 'shipped')
+    AND a.order_delivered_carrier_date IS NOT NULL
 );
 
 -- COMMAND ----------
@@ -208,20 +274,19 @@ CREATE OR REFRESH STREAMING LIVE TABLE dlt_order_info_silver AS (
 -- MAGIC 
 -- MAGIC ### dlt_sales_history_gold
 -- MAGIC 
--- MAGIC  **`dlt_sales_history_gold`** は、 **`dlt_order_info_silver`** をソースに作成します
--- MAGIC  
--- MAGIC  年月日によって集計を行い、テーブルを完全に書き換える増分的でない処理のため **`STREAMING`**  キーワードがなくなっていることに注意してください
+-- MAGIC  **`dlt_sales_history_gold`** は、 **`dlt_order_info_gold`** をソースに作成します
 
 -- COMMAND ----------
 
-CREATE OR REFRESH LIVE TABLE dlt_sales_history_gold AS (
-SELECT
-  purchase_date,
-  SUM(product_sales) sales
-FROM
-  LIVE.dlt_order_info_silver
-GROUP BY
-  purchase_date
-ORDER BY
-  purchase_date asc
-  );
+CREATE
+OR REFRESH LIVE TABLE dlt_sales_history_gold AS (
+  SELECT
+    purchase_date,
+    SUM(product_sales) sales
+  FROM
+    LIVE.dlt_order_info_gold
+  GROUP BY
+    purchase_date
+  ORDER BY
+    purchase_date asc
+);

@@ -25,11 +25,8 @@
 # COMMAND ----------
 
 # DBTITLE 1,Define valiables
-# Username を取得
-#username_raw = dbutils.notebook.entry_point.getDbutils().notebook().getContext().tags().apply('user')
-
 # データベース名を生成
-db_name = <<FILL-IN>>
+db_name = dbName = f'olist_db_{user_name}'
 spark.sql(f"USE {db_name}")
 
 # データベースを表示
@@ -53,7 +50,7 @@ print(f"database_name: {db_name}")
 # DBTITLE 1,既存データの再Load
 # Delta Tableからの読み込み
 
-sourcePath = '/dbfs/FileStore/db_hackathon4lakehouse_2022/datasource/'
+sourcePath = 'dbfs:/FileStore/db_hackathon4lakehouse_2022/additional_data/'
 
 orderitem_joinDF = <<FILL IN>>
 

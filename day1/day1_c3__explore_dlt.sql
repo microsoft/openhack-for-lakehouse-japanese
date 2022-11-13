@@ -5,22 +5,14 @@
 
 -- COMMAND ----------
 
--- MAGIC %python
--- MAGIC def display_slide(slide_id, slide_number):
--- MAGIC   displayHTML(f"""
--- MAGIC   <div style="width:1150px; margin:auto">
--- MAGIC   <iframe
--- MAGIC     src="https://docs.google.com/presentation/d/{slide_id}/embed?slide={slide_number}"
--- MAGIC     frameborder="0"
--- MAGIC     width="1150"
--- MAGIC     height="683"
--- MAGIC   ></iframe></div>
--- MAGIC   """)
-
--- COMMAND ----------
-
--- MAGIC %python
--- MAGIC display_slide("1ShJUFjNfkPvn5QjG7dDFi6nn66cQZfVMs1cjjzErEIE", 6)
+-- MAGIC %md-sandbox
+-- MAGIC <div style="width:1150px; margin:auto">
+-- MAGIC <iframe
+-- MAGIC   src="https://docs.google.com/presentation/d/1ShJUFjNfkPvn5QjG7dDFi6nn66cQZfVMs1cjjzErEIE/embed?slide=6"
+-- MAGIC   frameborder="0"
+-- MAGIC   width="1150"
+-- MAGIC   height="683"
+-- MAGIC ></iframe></div>
 
 -- COMMAND ----------
 
@@ -38,7 +30,7 @@
 -- MAGIC 
 -- MAGIC ### dlt_orders_bronze
 -- MAGIC 
--- MAGIC  **`dlt_orders_bronze`** は、 */dbfs/FileStore/db_hackathon4lakehouse_2022/datasource/dlt/orders/* にあるデータセットからcsvデータを段階的に取り込みます。
+-- MAGIC  **`dlt_orders_bronze`** は、 _dbfs:/FileStore/db_hackathon4lakehouse_2022/datasource/olist_orders_dataset*_  という名称のcsvデータを段階的に取り込みます。
 -- MAGIC 
 -- MAGIC （構造化ストリーミングと同じ処理モデルを使用した）<a herf="https://docs.databricks.com/spark/latest/structured-streaming/auto-loader.html" target="_blank">Auto Loader</a>を介した増分処理は、以下のように宣言に  **`STREAMING`**  キーワードを追加する必要があります。  **`cloud_files()`** メソッドを使うと、Auto LoaderをSQLでネイティブに使用できます。  **`cloud_files()`** メソッドは、次の位置パラメーターを取ります。
 -- MAGIC * 上記の通り、ソースの場所
@@ -53,7 +45,7 @@ CREATE OR REFRESH STREAMING LIVE TABLE dlt_orders_bronze AS
 SELECT
   *
 FROM
-  cloud_files("/FileStore/db_hackathon4lakehouse_2022/datasource/dlt/orders/", "csv",
+  cloud_files("/FileStore/db_hackathon4lakehouse_2022/datasource/olist_orders_dataset*.csv", "csv",
   map(
     "cloudFiles.inferColumnTypes", "true",
     "overwriteSchema", "true",
@@ -77,7 +69,7 @@ FROM
 -- MAGIC 
 -- MAGIC ### dlt_order_items_bronze
 -- MAGIC 
--- MAGIC  **`dlt_order_items_bronze`** は、 */dbfs/FileStore/db_hackathon4lakehouse_2022/datasource/dlt/order_items/* にあるデータセットからcsvデータを段階的に取り込みます。
+-- MAGIC  **`dlt_order_items_bronze`** は、 _dbfs:/FileStore/db_hackathon4lakehouse_2022/datasource/olist_order_items_dataset*_ という名称のcsvデータを段階的に取り込みます。
 
 -- COMMAND ----------
 
@@ -85,7 +77,7 @@ CREATE OR REFRESH STREAMING LIVE TABLE dlt_order_items_bronze AS
 SELECT
   *
 FROM
-  cloud_files("/FileStore/db_hackathon4lakehouse_2022/datasource/dlt/order_items/", "csv", 
+  cloud_files("/FileStore/db_hackathon4lakehouse_2022/datasource/olist_order_items_dataset*.csv", "csv", 
   map("cloudFiles.inferColumnTypes", "true",
     "overwriteSchema", "true",
   "cloudFiles.schemaHints", 

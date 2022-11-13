@@ -415,7 +415,7 @@ from databricks.feature_store import FeatureStoreClient
 
 fs = FeatureStoreClient()
 
-dbName = f'olist_db_team100'   # Database name
+dbName = f'olist_db_{user_name}'   # Database name
 featureTableName = 'item_sales'     # Table name
 
 spark.sql(f'create database if not exists {dbName}')

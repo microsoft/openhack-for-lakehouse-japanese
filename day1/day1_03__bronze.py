@@ -2,10 +2,9 @@
 # MAGIC %md # Hack Day 1
 # MAGIC ## 03. メダリオンアーキテクチャ構築の実践 - Bronze - (目安 11:30~12:00 + 13:45~14:15)
 # MAGIC ### 本ノートブックの目的：DatabricksにおけるBronze Tableの役割・取り扱いについて理解を深める
-# MAGIC Q1. Sparkテーブルにおけるテーブルプロパティ、および、事後処理の検討してください。<br>
-# MAGIC Q2. Bronzeテーブルのパイプラインを作成してください。<br>
-# MAGIC Q3. 半構造化データをbronzeテーブルとして読み込んでください。<br>
-# MAGIC Q4. deltaのタイムトラベル機能による誤ったデータの取り込みを修正してください。
+# MAGIC Q1. Bronzeテーブルのパイプラインを作成してください。<br>
+# MAGIC Q2. 半構造化データをbronzeテーブルとして読み込んでください。<br>
+# MAGIC Q3. deltaのタイムトラベル機能による誤ったデータの取り込みを修正してください。
 
 # COMMAND ----------
 
@@ -39,7 +38,7 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### Q2. Bronzeテーブルのパイプラインを作成してください。
+# MAGIC ### Q1. Bronzeテーブルのパイプラインを作成してください。
 
 # COMMAND ----------
 
@@ -362,7 +361,7 @@ alter_TBLPROPERTIES(tables_info)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### Q3.半構造化データをbronzeテーブルとして読み込んでください。
+# MAGIC ### Q2.半構造化データをbronzeテーブルとして読み込んでください。
 
 # COMMAND ----------
 
@@ -428,7 +427,7 @@ schema
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### Q4. deltaのタイムトラベル機能による誤ったデータの取り込みを修正してください。
+# MAGIC ### Q3. deltaのタイムトラベル機能による誤ったデータの取り込みを修正してください。
 
 # COMMAND ----------
 

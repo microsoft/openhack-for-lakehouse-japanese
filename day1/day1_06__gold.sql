@@ -6,7 +6,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %run ./includes/setup $mode="3"
+-- MAGIC %run ./includes/setup $mode="6"
 
 -- COMMAND ----------
 

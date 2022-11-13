@@ -18,11 +18,8 @@
 # COMMAND ----------
 
 # DBTITLE 1,Define valiables
-# Username を取得
-#username_raw = dbutils.notebook.entry_point.getDbutils().notebook().getContext().tags().apply('user')
-
 # データベース名を生成
-db_name = 'olist_db_team1' # feature storeに登録したデータベース名を指定する
+db_name = f'olist_db_{user_name}' # feature storeに登録したデータベース名を指定する
 spark.sql(f"USE {db_name}")
 
 # データベースを表示
@@ -46,7 +43,7 @@ print(f"database_name: {db_name}")
 # DBTITLE 1,Q1.Answer
 # Delta Tableからの読み込み
 # order item sales
-sourcePath = 'dbfs:/FileStore/db_hackathon4lakehouse_2022/datasource/'
+sourcePath = 'dbfs:/FileStore/db_hackathon4lakehouse_2022/additional_data/'
 
 orderitem_joinDF = spark.table("item_sales")
 

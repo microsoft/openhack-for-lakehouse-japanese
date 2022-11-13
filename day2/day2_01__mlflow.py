@@ -362,11 +362,9 @@ spark.sql("SET spark.databricks.delta.checkLatestSchemaOnRead=false")
 
 from databricks.feature_store import FeatureStoreClient
 
-# Todo: 自身のチームNo.をFeature Storeで使うdatabase名に入力してください
-
 fs = FeatureStoreClient()
 
-dbName = f'olist_db_team_<please-put-your-teamNo>'   # Database name
+dbName = f'olist_db_{user_name}'   # Database name
 featureTableName = 'item_sales'     # Table name
 
 spark.sql(f'create database if not exists {dbName}')

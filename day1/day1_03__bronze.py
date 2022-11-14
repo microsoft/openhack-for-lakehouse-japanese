@@ -2,10 +2,10 @@
 # MAGIC %md # Hack Day 1
 # MAGIC ## 03. メダリオンアーキテクチャ構築の実践 - Bronze - (目安 11:30~12:00 + 13:45~14:15)
 # MAGIC ### 本ノートブックの目的：DatabricksにおけるBronze Tableの役割・取り扱いについて理解を深める
-# MAGIC Q1. Sparkテーブルにおけるテーブルプロパティ、および、事後処理の検討してください。<br>
-# MAGIC Q2. Bronzeテーブルのパイプラインを作成してください。<br>
-# MAGIC Q3. 半構造化データをbronzeテーブルとして読み込んでください。<br>
-# MAGIC Q4. deltaのタイムトラベル機能による誤ったデータの取り込みを修正してください。
+# MAGIC Q1. Bronzeテーブルのパイプラインを作成してください。<br>
+# MAGIC Q2. 半構造化データをbronzeテーブルとして読み込んでください。<br>
+# MAGIC Q3. deltaのタイムトラベル機能による誤ったデータの取り込みを修正してください。<br>
+# MAGIC C1. その他ファイルをソースとしたブロンズテーブルへのパイプラインを作成してください。
 
 # COMMAND ----------
 
@@ -13,37 +13,8 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC ### Q1. Sparkテーブルにおけるテーブルプロパティ、および、事後処理の検討してください。
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ToDO 下記のドキュメントを参考に、設定すべきテーブルプロパティ、および、データエンジニアリング実施後に行うべき処理を、それぞれ3つ以上記載してください。
+# MAGIC %md **Data Overview**
 # MAGIC 
-# MAGIC - [ファイル管理を使用してパフォーマンスを最適化する - Azure Databricks | Microsoft Docs](https://docs.microsoft.com/ja-jp/azure/databricks/delta/optimizations/file-mgmt)
-# MAGIC - [自動最適化 - Azure Databricks | Microsoft Docs](https://docs.microsoft.com/ja-jp/azure/databricks/delta/optimizations/auto-optimize)
-# MAGIC - [ANALYZE TABLE - Azure Databricks | Microsoft Docs](https://docs.microsoft.com/ja-jp/azure/databricks/spark/latest/spark-sql/language-manual/sql-ref-syntax-aux-analyze-table)
-# MAGIC - [VACUUM - Azure Databricks | Microsoft Docs](https://docs.microsoft.com/ja-jp/azure/databricks/spark/latest/spark-sql/language-manual/delta-vacuum)
-# MAGIC - [What's the best practice on running ANALYZE on Delta Tables for query performance optimization? (databricks.com)](https://community.databricks.com/s/question/0D53f00001GHVicCAH/whats-the-best-practice-on-running-analyze-on-delta-tables-for-query-performance-optimization)
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC 設定を検討すべきテーブルプロパティ
-# MAGIC - << FILL IN >>
-# MAGIC 
-# MAGIC データエンジニアリング実施後に行うべき処理
-# MAGIC - << FILL IN >>
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### Q2. Bronzeテーブルのパイプラインを作成してください。
-
-# COMMAND ----------
-
-# MAGIC %md ### Data Overview
 # MAGIC 店舗データを読み込み、プロファイリング、delta table化、メダリオンアーキテクチャーにそった形でダッシュボードと機械学習用に使えるデータに整形しましょう!
 # MAGIC 
 # MAGIC 今回利用するデータセットの関連図です。
@@ -69,300 +40,193 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ToDo : 
-# MAGIC  **`customers_bronze`** テーブルを以下のステップで作成します。<br>
-# MAGIC  1. `src_path`と`schema`を用いてspark dataframeとしてcsvデータを読み込む
-# MAGIC  1. 1.で作成したspark dataframeはSQLの構文で直接参照できないため　**`tmp_customers`** という名前のtemporary viewを作成する
-# MAGIC  1. CREATE OR REPLACE TABLE AS構文によって2.で作成したviewを参照し　**`customers_bronze`** テーブルを作成する
-# MAGIC 
-# MAGIC  - [VIEW/TEMPORARY VIEW](https://learn.microsoft.com/en-us/azure/databricks/sql/language-manual/sql-ref-syntax-ddl-create-view)
-# MAGIC  - [spark dataframeからtemporary viewを作成する](https://spark.apache.org/docs/3.1.3/api/python/reference/api/pyspark.sql.DataFrame.createOrReplaceTempView.html)
-# MAGIC  - [DatabricksにてCTAS（CREATE TABLE AS SELECT）を利用する方法](https://qiita.com/manabian/items/6c960c1544c53977a316)
-
-# COMMAND ----------
-
-schema = '''
-            `customer_id` STRING,
-            `customer_unique_id` STRING,
-            `customer_zip_code_prefix` INT,
-            `customer_city` STRING,
-            `customer_state` STRING
-        '''
-
-src_path = f"{datasource_dir}/olist_customers_dataset.csv"
-
-df = (spark
-          <<FILL-IN>>
-     )
-
-# COMMAND ----------
-
-# temporary viewを作成する
-df.<<FILL-IN>>
-
-# COMMAND ----------
-
-# MAGIC %sql SELECT * FROM tmp_customers;
-
-# COMMAND ----------
-
-# MAGIC %sql DESC EXTENDED tmp_customers;
-
-# COMMAND ----------
-
-# MAGIC %sql 
-# MAGIC 
-# MAGIC -- CTASでolist_customers_dataset_bronzeを作成する
-# MAGIC -- optimizeWrite、および、autoCompactをTrueに設定
-# MAGIC -- https://learn.microsoft.com/ja-jp/azure/databricks/optimizations/auto-optimize
-# MAGIC 
-# MAGIC /* TODO　FILL-IN */
-
-# COMMAND ----------
-
-# MAGIC %sql DESC EXTENDED customers_bronze;
+# MAGIC ### Q1. Bronzeテーブルのパイプラインを作成してください。
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC CHECK : tables_infoを使って、各csvデータから同様のステップで複数のdeltaテーブルを一括で作成します<br>
-# MAGIC 1. spark.readでcsvを読み込みデータフレームへ格納する関数 **`create_dataframe`** を作成します<br>
-# MAGIC 1. データフレームをTemporaryViewへ変換し、CRAS（CREATE OR REPLACE TABLE AS構文）でテーブル作成する関数 **`save_as_delta_table`** を作成します<br>
-# MAGIC 1. 上記2ステップをtables_infoの各テーブルへ実行する関数 **`create_tables`** を作成します
+# MAGIC #### 実践例
 
 # COMMAND ----------
 
-# DBTITLE 1,作成するテーブルの情報
-tables_info = [
-    
-    # olist_geolocation_dataset
-    {
-        "database_name" : f"{database}",
-        "table_name"    : "geolocation_bronze",
-        "src_path"      : f"{datasource_dir}/olist_geolocation_dataset.csv",
-        "file_format"   : "csv",
-        "schema"        : '''
-            `geolocation_zip_code_prefix` INT,
-            `geolocation_lat` DOUBLE,
-            `geolocation_lng` DOUBLE,
-            `geolocation_city` STRING,
-            `geolocation_state` STRING
-        ''',
-    },
-    
-    # olist_order_items_dataset
-    {
-        "database_name" : f"{database}",
-        "table_name"    : "order_items_bronze",
-        "src_path"      : f"{datasource_dir}/olist_order_items_dataset.csv",
-        "file_format"   : "csv",
-        "schema"        : '''
-            `order_id` STRING,
-            `order_item_id` INT,
-            `product_id` STRING,
-            `seller_id` STRING,
-            `shipping_limit_date` STRING,
-            `price` DOUBLE,
-            `freight_value` DOUBLE
-        ''',
-    },
-    
-    # olist_order_payments_dataset
-    {
-        "database_name" : f"{database}",
-        "table_name"    : "order_payments_bronze",
-        "src_path"      : f"{datasource_dir}/olist_order_payments_dataset.csv",
-        "file_format"   : "csv",
-        "schema"        : '''
-            `order_id` STRING,
-            `payment_sequential` INT,
-            `payment_type` STRING,
-            `payment_installments` INT,
-            `payment_value` DOUBLE
-        ''',
-    },
-    
-    # olist_order_reviews_dataset
-    {
-        "database_name" : f"{database}",
-        "table_name"    : "order_reviews_bronze",
-        "src_path"      : f"{datasource_dir}/olist_order_reviews_dataset.csv",
-        "file_format"   : "csv",
-        "schema"        : '''
-    `review_id` STRING,
+# CSV の中身をチェック
+data = dbutils.fs.head(f"{datasource_dir}/olist_orders_dataset.csv", 700)
+print(data)
+
+# COMMAND ----------
+
+src_file_path__3_1_1 = f"{datasource_dir}/olist_orders_dataset*.csv"
+tgt_table_name__3_1_1 = "olist_orders_dataset_bronze"
+
+# COMMAND ----------
+
+# Bronzeテーブルを作成
+spark.sql(
+    f"""
+CREATE OR REPLACE TABLE {tgt_table_name__3_1_1}
+(
     `order_id` STRING,
-    `review_score` INT,
-    `review_comment_title` STRING,
-    `review_comment_message` STRING,
-    `review_creation_date` TIMESTAMP,
-    `review_answer_timestamp` TIMESTAMP
-        ''',
-    },
-    
-    # olist_orders_dataset
-    {
-        "database_name" : f"{database}",
-        "table_name"    : "orders_bronze",
-        "src_path"      : f"{datasource_dir}/olist_orders_dataset.csv",
-        "file_format"   : "csv",
-        "schema"        : '''
-            `order_id` STRING,
-            `customer_id` STRING,
-            `order_status` STRING,
-            `order_purchase_timestamp` TIMESTAMP,
-            `order_approved_at` TIMESTAMP,
-            `order_delivered_carrier_date` TIMESTAMP,
-            `order_delivered_customer_date` TIMESTAMP,
-            `order_estimated_delivery_date` TIMESTAMP    
-        ''',
-    },
-    
-    # olist_products_dataset
-    {
-        "database_name" : f"{database}",
-        "table_name"    : "products_bronze",
-        "src_path"      : f"{datasource_dir}/olist_products_dataset.csv",
-        "file_format"   : "csv",
-        "schema"        : '''
-            `product_id` STRING,
-            `product_category_name` STRING,
-            `product_name_lenght` INT,
-            `product_description_lenght` INT,
-            `product_photos_qty` INT,
-            `product_weight_g` INT,
-            `product_length_cm` INT,
-            `product_height_cm` INT,
-            `product_width_cm` INT
-        ''',
-    },
-  
-    # product_category_name_translation
-    {
-        "database_name" : f"{database}",
-        "table_name"    : "product_category_name_translation_bronze",
-        "src_path"      : f"{datasource_dir}/product_category_name_translation.csv",
-        "file_format"   : "csv",
-        "schema"        : '''
-            `product_category_name` STRING,
-            `product_category_name_english` STRING
-        ''',
-    },
-]
+    `customer_id` STRING,
+    `order_status` STRING,
+    `order_purchase_timestamp` STRING,
+    `order_approved_at` STRING,
+    `order_delivered_carrier_date` STRING,
+    `order_delivered_customer_date` STRING,
+    `order_estimated_delivery_date` STRING,
+    _datasource STRING,
+    _ingest_timestamp timestamp
+)
+USING delta
+"""
+)
 
 # COMMAND ----------
 
-from  pyspark.sql.functions import current_timestamp
-
-def crate_dataframe(
-    schema,
-    src_path,
-    file_format,
-    header=True,    
-):
-    """データフレームをリターン
-    """
-    df = (spark
-              .read
-              .format(file_format)
-              .schema(schema)
-              .option('header', header)
-              .load(src_path)
-         )
-
-    return df
+# 現在のテーブル定義を確認
+spark.sql(f"""DESC EXTENDED {tgt_table_name__3_1_1}""").display()
 
 # COMMAND ----------
 
-def save_as_delta_table(
-    src_df,
-    database_name,
-    table_name,
-):
-    """CTAS（Create As A Table）によりテーブルを作成
-    """
-    # 一時ビューを作成
-    tmp_view_name = f'_tmp_{table_name}'
-    src_df.createOrReplaceTempView(tmp_view_name)
-    
-    # CTAS（CREAT TABLE AS SLECT）により、テーブルを作成。
-    spark.sql(f"""
-        CREATE OR REPLACE TABLE {database_name}.{table_name}
-          USING delta
-          AS 
-          SELECT 
-            * 
-            FROM 
-              {tmp_view_name}
-      
-    """
-    )
+# ソースからデータを読み込む
+df = (
+    spark.read.format("csv")
+    .option("header", "true")
+    .option("inferSchema", "False")
+    .load(src_file_path__3_1_1)
+)
+
+# 監査列として`_datasource`列と`_ingest_timestamp`列を追加
+df = (
+    df.select("*", "_metadata")
+    .withColumn("_datasource", df["_metadata.file_path"])
+    .withColumn("_ingest_timestamp", df["_metadata.file_modification_time"])
+    .drop("_metadata")
+)
+
+# ターゲットのテーブルへ`append`によりデータの書き込みを実施してください。
+(
+    df.write.format("delta")
+    .mode("append")
+    .option("mergeSchema", "true")
+    .saveAsTable(tgt_table_name__3_1_1)
+)
 
 # COMMAND ----------
 
-def create_tables(tables_info):
-    """テーブル情報の辞書型リストに基づき、データフレームを作成して、テーブルを作成
-    """
-    print("---Started to create tables---")
-    for l in tables_info:
-        src_df = crate_dataframe(
-            src_path    = l["src_path"],
-            schema      = l["schema"],
-            file_format = l["file_format"],
-        )
-        
-        # `_ingest_timestamp`列を追加
-        # _ingest_timestammpがいらないので、day2では利用しない
-        # src_df = src_df.withColumn("_ingest_timestamp", current_timestamp())
-        
-        save_as_delta_table(
-            src_df         = src_df,
-            database_name  = l["database_name"],
-            table_name     = l["table_name"],
-        )
-        
-        print(f'`{l["table_name"]}`table is created.')
-    print("---Ended to create tables---")
-
-# COMMAND ----------
-
-# DBTITLE 1,csvファイルからTableを一括で作成
-create_tables(tables_info)
-
-# COMMAND ----------
-
-# DBTITLE 1,作成したテーブルの定義を確認（いろいろなテーブルで確認してみる）
-# MAGIC %sql
-# MAGIC DESC EXTENDED customers_bronze;
-
-# COMMAND ----------
-
-# DBTITLE 1,テーブル設定を一括で変更
-def alter_TBLPROPERTIES(tables_info):
-  print("---Start to alter TBLPROPERTIES.---")
-  for l in tables_info:
-    table_name = l["table_name"]
-    spark.sql(f'''
-    ALTER TABLE {table_name}  
-      SET TBLPROPERTIES (
-        delta.autoOptimize.optimizeWrite = True, 
-        delta.autoOptimize.autoCompact   = True
-      )
-    ''')
-    print(f"`{table_name}` is altered.")
-  print("---End to alter TBLPROPERTIES.---")
-
-alter_TBLPROPERTIES(tables_info)
-
-# COMMAND ----------
-
-# DBTITLE 1,変更したテーブルの設定を確認（いろいろなテーブルで確認してみる）
-# MAGIC %sql
-# MAGIC DESC EXTENDED customers_bronze;
+# データが書き込まれたことを確認
+display(spark.table(tgt_table_name__3_1_1))
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### Q3.半構造化データをbronzeテーブルとして読み込んでください。
+# MAGIC #### ToDo **`olist_order_items_dataset.csv`** をソースとして **`olist_order_items_dataset_bronze`** テーブルへデータを書き込むパイプラインを作成してください。
+
+# COMMAND ----------
+
+tgt_table_name__3_1_2 = "olist_order_items_dataset_bronze"
+src_file_path__3_1_2 = f"{datasource_dir}/olist_order_items_dataset*.csv"
+
+# COMMAND ----------
+
+# ToDo `olist_order_items_dataset.csv` をソースとして `olist_order_items_dataset_bronze` テーブルへデータを書き込むパイプラインを作成してください。
+<<FILL-IN>>
+
+# COMMAND ----------
+
+# 現在のテーブル定義を確認
+spark.sql(f"""DESC EXTENDED {tgt_table_name__3_1_2}""").display()
+
+# COMMAND ----------
+
+# ToDo `src_file_path__3_1_2`変数をソースとしてデータを読み込む
+df = (
+    spark.read.format("csv")
+    .option("header", "true")
+    .option("inferSchema", "False")
+    .load(src_file_path__3_1_2)
+)
+
+# ToDo 監査列として`_datasource`列と`_ingest_timestamp`列を追加
+df = (
+    df.select("*", "_metadata")
+    .withColumn("_datasource", df["_metadata.file_path"])
+    .withColumn("_ingest_timestamp", df["_metadata.file_modification_time"])
+    .drop("_metadata")
+)
+
+# ToDo `tgt_table_name__3_1_2`変数のテーブルへ`append`によりデータの書き込みを実施してください。
+(
+    df.write.format("delta")
+    .mode("append")
+    .option("mergeSchema", "true")
+    .saveAsTable(tgt_table_name__3_1_2)
+)
+
+# COMMAND ----------
+
+# データが書き込まれたことを確認
+display(spark.table(tgt_table_name__3_1_2))
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC #### 本ノートブック以降で利用するテーブルへの書き込みを実施
+
+# COMMAND ----------
+
+# `olist_order_reviews_dataset_bronze` テーブルへ書き込み
+tgt_table_name__3_1_3 = "olist_order_reviews_dataset_bronze"
+tgt_table_schema__3_1_3 = """
+`review_id` STRING,
+`order_id` STRING,
+`review_score` STRING,
+`review_comment_title` STRING,
+`review_comment_message` STRING,
+`review_creation_date` STRING,
+`review_answer_timestamp` STRING
+"""
+src_file_path__3_1_3 = f"{datasource_dir}/olist_order_reviews_dataset*.csv"
+
+create_bronze_tbl(tgt_table_name__3_1_3, tgt_table_schema__3_1_3)
+write_to_bronze_tbl(src_file_path__3_1_3, tgt_table_name__3_1_3)
+
+spark.table(tgt_table_name__3_1_3).display()
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Q2. 半構造化データをbronzeテーブルとして読み込む
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC 
+# MAGIC json ファイルをソースとした spark データフレームの作成の実践
+# MAGIC 
+# MAGIC 参考リンク
+# MAGIC 
+# MAGIC - [JSON Files - Spark 3.2.1 Documentation (apache.org)](https://spark.apache.org/docs/latest/sql-data-sources-json.html)
+# MAGIC - [pyspark.sql.DataFrameReader.json — PySpark 3.2.1 documentation (apache.org)](https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.sql.DataFrameReader.json.html#pyspark.sql.DataFrameReader.json)
+
+# COMMAND ----------
+
+# json ファイルの中身を確認
+import pprint
+
+sample_file_path = (
+    "/databricks-datasets/learning-spark-v2/flights/summary-data/json/2010-summary.json"
+)
+json_data = dbutils.fs.head(sample_file_path)
+
+pprint.pprint(json_data)
+
+# COMMAND ----------
+
+# `primitivesAsString` オプションを `True` にすることで文字列として読み込むことが可能
+file_path = "/databricks-datasets/learning-spark-v2/flights/summary-data/json/*"
+df = spark.read.format("json").option("primitivesAsString", True).load(file_path)
+
+df.display()
 
 # COMMAND ----------
 
@@ -370,99 +234,193 @@ alter_TBLPROPERTIES(tables_info)
 # MAGIC ToDo : 
 # MAGIC 出品業者の情報である **`sellers_bronze`** テーブルはjson形式のファイルをロードして作成します。<br>
 # MAGIC jsonは入れ子構造のデータ型です。jsonのスキーマはPySpark DataframeではSTRUCT型を用いて表現します。<br>
-# MAGIC 
-# MAGIC 参考リンク<br>
-# MAGIC - [JSON Files - Spark 3.2.1 Documentation (apache.org)](https://spark.apache.org/docs/latest/sql-data-sources-json.html)
-# MAGIC - [pyspark.sql.DataFrameReader.json — PySpark 3.2.1 documentation (apache.org)](https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.sql.DataFrameReader.json.html#pyspark.sql.DataFrameReader.json)
-# MAGIC - [Databricks（Spark）にてScalaの関数で取得可能なDDL文字列をPythonで取得する方法 - Qiita](https://qiita.com/manabian/items/4908f77a4da2c040cd6a)
-
-# COMMAND ----------
-
-# すべてのカラムのデータ型を文字列としたデータフレームを作成します
-df = (spark
-        .read
-        .format('json')
-        .option('primitivesAsString', True)
-        .load(f"{datasource_dir}/olist_sellers_dataset.json")
-     )
-
-# データフレームのスキーマを表示します
-json_data = df.schema.json()
-schema = spark.sparkContext._jvm.org.apache.spark.sql.types.DataType.fromJson(json_data).toDDL()
-schema
-
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC -- ToDo `sellers_bronze`をテーブル名として、すべてのカラムを文字列で保持したBronzeテーブルを作成してください。
-# MAGIC -- `optimizeWrite`、および、`autoCompact`を`True`に設定
-# MAGIC -- 最初の1列を統計情報の取得対象に設定
-# MAGIC CREATE OR REPLACE TABLE sellers_bronze
-# MAGIC (
-# MAGIC   
-# MAGIC   <<FILL-IN>>
-# MAGIC )
-# MAGIC TBLPROPERTIES (
-# MAGIC     <<FILL-IN>>
-# MAGIC   )
-
-# COMMAND ----------
-
-# ターゲットのテーブルへデータフレームから`append`によりデータを書き込む
-(df.write
-   .format('delta')
-   .mode('append')
-   .option("mergeSchema", "true")
-   .saveAsTable("sellers_bronze")
-)
-
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC -- 確認、seller列が構造体になっている
-# MAGIC SELECT
-# MAGIC   *
-# MAGIC FROM
-# MAGIC   sellers_bronze
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### Q4. deltaのタイムトラベル機能による誤ったデータの取り込みを修正してください。
+# MAGIC ToDo : json 形式に変換した **olist_sellers_dataset** をソースとした **`olist_sellers_dataset_bronze`** テーブルへのデータを書き込むパイプラインを作成してください。
+
+# COMMAND ----------
+
+tgt_table_name__3_2_1 = "olist_sellers_dataset_bronze"
+src_file_path__3_2_1 = src_file_dir__c_2
+
+# COMMAND ----------
+
+spark.sql(
+    f"""
+CREATE OR REPLACE TABLE {tgt_table_name__3_2_1}
+(
+  
+  seller_id STRING,
+  seller STRUCT <
+    `city`: STRING, 
+    `state`: STRING,
+    `zip_code_prefix`: STRING
+  >,
+  _datasource STRING,
+  _ingest_timestamp timestamp  
+)
+"""
+)
+
+# COMMAND ----------
+
+# ToDo すべてのカラムのデータ型を文字列としたデータフレームを作成してください
+<<FILL-IN>>
+
+# 監査列として`_datasource`列と`_ingest_timestamp`列を追加
+df = (
+    df.select("*", "_metadata")
+    .withColumn("_datasource", df["_metadata.file_path"])
+    .withColumn("_ingest_timestamp", df["_metadata.file_modification_time"])
+    .drop("_metadata")
+)
+
+# COMMAND ----------
+
+# ターゲットのテーブルへデータフレームから`append`によりデータを書き込む
+(
+    df.write.format("delta")
+    .mode("append")
+    .option("mergeSchema", "true")
+    .saveAsTable(tgt_table_name__3_2_1)
+)
+
+# COMMAND ----------
+
+# データを確認
+spark.table(tgt_table_name__3_2_1).display()
+
+# COMMAND ----------
+
+# ToDo  `seller`列にある`city`の項目のみを表示するデータを表示してください。
+spark.sql(
+    f"""
+SELECT
+  seller.city
+  FROM 
+    {tgt_table_name__3_2_1}
+"""
+).display()
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Q3. deltaのタイムトラベル機能による誤ったデータの取り込みを修正
+
+# COMMAND ----------
+
+# Bronzeテーブルを作成
+spark.sql(
+    f"""
+CREATE OR REPLACE TABLE olist_customers_dataset_bronze
+(
+    customer_id string,
+    customer_unique_id string,
+    customer_zip_code_prefix string,
+    customer_city string,
+    customer_state string,
+    _datasource STRING,
+    _ingest_timestamp timestamp
+)
+USING delta
+"""
+)
 
 # COMMAND ----------
 
 # DBTITLE 1,ダミーデータをcustomers_bronzeへ書き込む
 # MAGIC %sql
-# MAGIC 
-# MAGIC INSERT INTO customers_bronze VALUES
-# MAGIC     ('test', 'test', 1060032, 'roppongi', 'JP');
+# MAGIC INSERT INTO
+# MAGIC   olist_customers_dataset_bronze
+# MAGIC VALUES
+# MAGIC   (
+# MAGIC     'test',
+# MAGIC     'test',
+# MAGIC     1060032,
+# MAGIC     'roppongi',
+# MAGIC     'JP',
+# MAGIC     'abc',
+# MAGIC     CAST('2020-02-01' AS timestamp)
+# MAGIC   );
 
 # COMMAND ----------
 
 # DBTITLE 1,dataが書き込まれたことを確認
 # MAGIC %sql
-# MAGIC 
-# MAGIC SELECT * FROM customers_bronze
-# MAGIC WHERE customer_id = 'test'
+# MAGIC SELECT
+# MAGIC   *
+# MAGIC FROM
+# MAGIC   olist_customers_dataset_bronze
+# MAGIC WHERE
+# MAGIC   customer_id = 'test'
 
 # COMMAND ----------
 
 # DBTITLE 1,レコードがWRITEされた履歴を確認し、その直前のバージョン番号を控える
-# MAGIC %sql
-# MAGIC 
-# MAGIC DESC HISTORY customers_bronze
+# MAGIC %sql DESC HISTORY olist_customers_dataset_bronze
 
 # COMMAND ----------
 
-# MAGIC %sql
+# MAGIC %sql 
 # MAGIC -- ToDo : testレコードがWRITEされていないバージョンに戻す
 # MAGIC -- https://qiita.com/taka_yayoi/items/3b2095825a7e48b86f69
-# MAGIC <<FILL IN>>
+# MAGIC -- <<FILL IN>>
 
 # COMMAND ----------
 
-# MAGIC %sql
+# MAGIC %sql 
 # MAGIC -- testレコードがないテーブルのバージョンへ戻ったことを確認する
-# MAGIC SELECT * FROM customers_bronze
-# MAGIC WHERE customer_id = 'test'
+# MAGIC SELECT
+# MAGIC   *
+# MAGIC FROM
+# MAGIC   olist_customers_dataset_bronze
+# MAGIC WHERE
+# MAGIC   customer_id = 'test'
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## C1. その他ファイルをソースとした Bronze テーブルへのパイプラインを作成してください。
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ToDo 未取り込みである下記のファイルをソースとした Bronze テーブルへのパイプラインを作成してください。
+# MAGIC 
+# MAGIC - olist_customers_dataset.csv
+# MAGIC - olist_geolocation_dataset.csv
+# MAGIC - olist_order_payments_dataset.csv
+# MAGIC - olist_products_dataset.csv
+# MAGIC - product_category_name_translation.csv
+
+# COMMAND ----------
+
+# ファイルを確認
+display(dbutils.fs.ls(datasource_dir))
+
+# COMMAND ----------
+
+# ToDo `olist_customers_dataset_bronze` テーブルへ書き込み
+<<FILL-IN>>
+
+# COMMAND ----------
+
+# Todo `olist_geolocation_dataset_bronze` テーブルへ書き込み
+<<FILL-IN>>
+
+# COMMAND ----------
+
+# Todo `olist_order_payments_dataset_bronze` テーブルへ書き込み
+<<FILL-IN>>
+
+# COMMAND ----------
+
+# ToDo `olist_products_dataset_bronze` テーブルへ書き込み
+<<FILL-IN>>
+
+# COMMAND ----------
+
+# ToDo `product_category_name_translation_bronze` テーブルへ書き込み
+<<FILL-IN>>

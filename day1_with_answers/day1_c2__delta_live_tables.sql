@@ -20,21 +20,13 @@
 
 -- COMMAND ----------
 
-
-
--- COMMAND ----------
-
-
+-- MAGIC %run ./includes/setup $mode="c_2"
 
 -- COMMAND ----------
 
 -- MAGIC %md
 -- MAGIC 
 -- MAGIC ### Q1. Delta Live Tablesのセッティングを行なってください
-
--- COMMAND ----------
-
--- MAGIC %run ./includes/setup $mode="3"
 
 -- COMMAND ----------
 

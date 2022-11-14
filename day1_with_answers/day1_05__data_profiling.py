@@ -1,17 +1,12 @@
 # Databricks notebook source
 # MAGIC %md # Hack Day 1
-# MAGIC ## 04. メダリオンアーキテクチャ構築の実践 - Data Profile - (目安 14:15~14:45)
+# MAGIC ## 05. メダリオンアーキテクチャ構築の実践 - Data Profile - (目安 14:15~14:45)
 # MAGIC ### 本ノートブックの目的：Data Profile機能を使った、数値・文字列・日付の各列の基本統計量と各列の値分布のヒストグラムの表示方法を理解する
 # MAGIC Q1. Data Profileを確認して前処理方針を決定しよう
 
 # COMMAND ----------
 
-# MAGIC %run ./includes/setup $mode="3"
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### Q1. Data Profileを確認して前処理方針を決定しよう
+# MAGIC %run ./includes/setup $mode="5"
 
 # COMMAND ----------
 
@@ -41,6 +36,11 @@
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC ### Q1. Data Profileを確認して前処理方針を決定しよう
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC ToDo : day1_03__bronzeで作成したテーブルのData Profileを確認し、欠損値・重複・その他気づきを整理し、チーム内で共有してみる<br>
 # MAGIC Hint1 : https://www.databricks.com/blog/2021/12/07/introducing-data-profiles-in-the-databricks-notebook.html <br>
 # MAGIC Hint2 : 上記のData Overviewを参考に結合キーになりそうなカラムのプロファイルは重点的に観察する <br>
@@ -48,9 +48,13 @@
 
 # COMMAND ----------
 
-# DBTITLE 1,order_items_bronzeのData Profileを確認する
+# DBTITLE 1, olist_order_items_dataset_silver のData Profileを確認する
 # MAGIC %sql
-# MAGIC SELECT * FROM order_items_bronze;
+# MAGIC SELECT
+# MAGIC   *,
+# MAGIC   price + freight_value product_sales
+# MAGIC FROM
+# MAGIC   olist_order_items_dataset_silver;
 
 # COMMAND ----------
 
@@ -61,9 +65,12 @@
 
 # COMMAND ----------
 
-# DBTITLE 1,order_reviews_bronzeのData Profileを確認する
+# DBTITLE 1,olist_order_reviews_dataset_silver のData Profileを確認する
 # MAGIC %sql
-# MAGIC SELECT * FROM order_reviews_bronze;
+# MAGIC SELECT
+# MAGIC   *
+# MAGIC FROM
+# MAGIC   olist_order_reviews_dataset_silver;
 
 # COMMAND ----------
 
@@ -77,7 +84,7 @@
 # MAGIC   review_score,
 # MAGIC   count(*)
 # MAGIC FROM
-# MAGIC   order_reviews_bronze
+# MAGIC   olist_order_reviews_dataset_silver
 # MAGIC GROUP BY
 # MAGIC   review_score;
 
@@ -90,9 +97,12 @@
 
 # COMMAND ----------
 
-# DBTITLE 1,orders_bronzeのData Profileを確認する
+# DBTITLE 1,olist_orders_dataset_silver のData Profileを確認する
 # MAGIC %sql
-# MAGIC SELECT * FROM olist_orders_dataset_bronze
+# MAGIC SELECT
+# MAGIC   *
+# MAGIC FROM
+# MAGIC   olist_orders_dataset_silver
 
 # COMMAND ----------
 
@@ -103,15 +113,12 @@
 
 # COMMAND ----------
 
-# DBTITLE 1,sellers_bronzeのData Profileを確認する
+# DBTITLE 1,olist_sellers_dataset_silver のData Profileを確認する
 # MAGIC %sql
-# MAGIC -- seller.<key>を指定することで構造体の中の値にアクセスできる
 # MAGIC SELECT
-# MAGIC   seller_id,
-# MAGIC   <<FILL-IN>>
-# MAGIC   seller
+# MAGIC   *
 # MAGIC FROM
-# MAGIC   olist_sellers_dataset_bronze;
+# MAGIC   olist_sellers_dataset_silver;
 
 # COMMAND ----------
 

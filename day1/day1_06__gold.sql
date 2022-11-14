@@ -6,7 +6,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %run ./includes/setup $mode="3"
+-- MAGIC %run ./includes/setup $mode="6"
 
 -- COMMAND ----------
 
@@ -16,12 +16,67 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC ToDo : 
+-- MAGIC #### 実践例
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC 
+-- MAGIC - **`orders_silver`** に **`order_items_silver`** を`order_id`を結合キーとして左側結合する
+-- MAGIC - `order_purchase_timestamp`をDATE型に CAST して、`purchase_date`　列として追加
+-- MAGIC - `order_status`列が`delivered`と`shipped`のレコードを抽出
+-- MAGIC - `order_delivered_carrier_date`列がNULLでないレコードを抽出
+-- MAGIC - `purchase_date`, `seller_id`, `order_id`, `product_id`, `product_sales`をカラムとする新規のテーブル **`order_info_gold`** としてテーブル作成する
+
+-- COMMAND ----------
+
+-- MAGIC %sql CREATE
+-- MAGIC OR REPLACE TABLE order_info_silver AS
+-- MAGIC SELECT
+-- MAGIC   a.order_id,
+-- MAGIC   seller_id,
+-- MAGIC   product_id,
+-- MAGIC   CAST(order_purchase_timestamp AS DATE) AS purchase_date,
+-- MAGIC   price + freight_value AS product_sales
+-- MAGIC FROM
+-- MAGIC   olist_orders_dataset_silver a
+-- MAGIC   LEFT OUTER JOIN olist_order_items_dataset_silver b ON a.order_id = b.order_id
+-- MAGIC WHERE
+-- MAGIC   a.order_status IN ('delivered', 'shipped')
+-- MAGIC   AND a.order_delivered_carrier_date IS NOT NULL;
+
+-- COMMAND ----------
+
+-- MAGIC %sql
+-- MAGIC SELECT
+-- MAGIC   *
+-- MAGIC FROM
+-- MAGIC   order_info_silver
+-- MAGIC LIMIT
+-- MAGIC   5;
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC #### ToDo `sales_history_gold` を作成してください。
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC ToDo
 -- MAGIC - **`order_info_silver`** を`date`で集計し、`product_sales`をSUMし新規のカラム`sales`を作成する
--- MAGIC - `purchase_date`, `sales`をカラムとする売上の時系列データの新規テーブル **`sales_history_gold`** を作成してください
 -- MAGIC -  **`sales_history_gold`** を `purchase_date`をキーに昇順で並び替えてください
+-- MAGIC - `purchase_date`, `sales`をカラムとする売上の時系列データの新規テーブル **`sales_history_gold`** を作成してください
 
 -- COMMAND ----------
 
 -- TODO
 <<FILL-IN>>
+
+-- COMMAND ----------
+
+-- MAGIC %sql
+-- MAGIC SELECT
+-- MAGIC   *
+-- MAGIC FROM
+-- MAGIC   sales_history_gold

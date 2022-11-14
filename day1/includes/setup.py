@@ -7,10 +7,12 @@
 # MAGIC /dbfs/FileStore
 # MAGIC ├── db_hackathon4lakehouse_2022
 # MAGIC │   ├── datasource      <- kaggleにて提供されているCSVファイルを配置
+# MAGIC │   ├── additional_data <- `init` mode による setup 時に作成される CSV ファイルを配置
 # MAGIC │   ├── {user_name}
 # MAGIC │   │   ├── src         <- Day1で利用するソースファイルを配置
 # MAGIC │   │   ├── database    <- Day1で利用するデータベースのディレクトリ
 # MAGIC │   │   ├── auto_loader <- Auto Loader機能で利用するディレクトリ
+# MAGIC │   │   ├── dlt         <- Delta Live table 機能で利用するディレクトリ
 # MAGIC ```
 # MAGIC 
 # MAGIC ※ 事前に`dbfs:/FileStore/db_hackathon4lakehouse_2022/datasource`ディレクトリに下記のデータセットを配置する必要あります。
@@ -37,6 +39,13 @@ data_path       = f'/FileStore/db_hackathon4lakehouse_2022/{user_name}'
 
 # Kaggleからダウンロードしたファイルを配置するディレクトリ
 datasource_dir = f'/FileStore/db_hackathon4lakehouse_2022/datasource'
+
+# 追加のファイルを配置するディレクトリ
+additionla_datasource_dir = f'/FileStore/db_hackathon4lakehouse_2022/additional_data'
+
+# COMMAND ----------
+
+# MAGIC %run ./additiona_data_sources
 
 # COMMAND ----------
 
@@ -84,7 +93,7 @@ def print__c4__file_path():
     
 def print__c4__db_name():    
     # 現在のデータベース
-    print(f'Current Database                 : {spark.catalog.currentDatabase()}')
+    print(f"Current Database                 : {spark.sql('SELECT current_database()').first()[0]}")
 
 
 # COMMAND ----------
@@ -92,14 +101,17 @@ def print__c4__db_name():
 if mode == "init":
 
     # データベースの準備
-    print(f"data_path : {data_path}")
     spark.sql(f"DROP DATABASE IF EXISTS {database} CASCADE")
     spark.sql(f'CREATE DATABASE IF NOT EXISTS {database} LOCATION "{data_path}/database/{database}"')
 
+    # 追加のデータファイルを作成
+    addtional_data_sources = AddtionalDataSources()
+    addtional_data_sources.put_additional_data_source()
+    print('\n')
 
 # データベースのデフォルトをセット
 spark.sql(f"USE {database}")
-print(f"database  : {spark.catalog.currentDatabase()}")
+print(f"database  : {spark.sql('SELECT current_database()').first()[0]}")
 
 if mode != '2_2':
     # 2-2以外の手順では、パーティション数のデフォルト'200'を指定
@@ -109,6 +121,45 @@ if mode == '2_2':
     # 2-2の手順では、ストリーミング処理を行うため、現在のsparkコア数をパーティション数として指定
     spark_core = spark.sparkContext.defaultParallelism
     spark.conf.set("spark.sql.shuffle.partitions", spark_core)
+
+if mode == '3':
+    # 初回データの配置
+    origin_file_path__c_2 = f'{datasource_dir}/olist_sellers_dataset.csv'
+    src_file_dir__c_2 = f'{data_path}/src/c_2'
+    
+    schema = '''
+        `seller_id` STRING,
+        `seller_zip_code_prefix` INT,
+        `seller_city` STRING,
+        `seller_state` STRING
+    '''
+    df = (spark
+              .read
+              .format('csv')
+              .schema(schema)
+              .option('header', 'true')
+              .load(origin_file_path__c_2)
+         )
+    
+    from pyspark.sql.functions import col,struct,when
+    df = (df
+          .withColumn("seller",
+              struct(
+                  col("seller_zip_code_prefix").alias("zip_code_prefix"),
+                  col("seller_city").alias("city"),
+                  col("seller_state").alias("state"),
+              ),
+           )
+          .select('seller_id','seller')
+     )
+    # jsonファイルとして書き込み
+    (df.coalesce(1)
+         .write
+         .format("json")
+         .mode("overwrite")
+         .save(src_file_dir__c_2)
+    )
+    
 
 if mode == '3_2':
     # 初回データの配置
@@ -127,8 +178,8 @@ if mode == '3_2':
     src_file_path__3_2__second = f'{data_path}/src/3_2/second/olist_orders_dataset.csv'
     dbutils.fs.cp(origin_file_path__3_2, src_file_path__3_2__second, True)
 
-if mode == 'c_1':
-    # 初回目データの配置
+if mode == '3_3':
+    # 初回データの配置
     origin_file_path__c_1 = f'{datasource_dir}/olist_order_items_dataset.csv'
     src_file_path__c_1__first = f'{data_path}/src/c_1/first/olist_order_items_dataset.csv'
     dbutils.fs.cp(origin_file_path__c_1, src_file_path__c_1__first, True)
@@ -144,30 +195,42 @@ if mode == 'c_1':
     dbutils.fs.rm(src_file_path__c_1__second, True)
     put_csv_files(src_file_path__c_1__second, csv_data)
 
-if mode == 'c_2':
-    import os
-    # dlt用のディレクトリ作成
-    orders_dir = f"{data_path}/dlt/orders/"
-    order_items_dir = f"{data_path}/dlt/order_items/"
+if mode == 'c_3':
+    import datetime
+    current_datetime = datetime.datetime.now()
+    datetime_num_str = current_datetime.strftime('%Y%m%d%H%M%S')
+    dlt_srcs = {
+        'olist_customers_dataset': f'{data_path}/dlt/customers',
+        'olist_geolocation_dataset': f'{data_path}/dlt/geolocation',
+        'olist_order_items_dataset': f'{data_path}/dlt/order_items',
+        'olist_order_payments_dataset': f'{data_path}/dlt/order_payments',
+        'olist_order_reviews_dataset': f'{data_path}/dlt/order_reviews',
+        'olist_orders_dataset': f'{data_path}/dlt/orders',
+        'olist_products_dataset': f'{data_path}/dlt/products',
+        'olist_sellers_dataset': f'{data_path}/dlt/sellers',
+        'product_category_name_translation': f'{data_path}/dlt/product_category_name_translation',        
+    }
+    dlt_src_files = {
+        f'{datasource_dir}/olist_customers_dataset.csv': f'{dlt_srcs["olist_customers_dataset"]}/olist_customers_dataset_{datetime_num_str}.csv',
+        f'{datasource_dir}/olist_geolocation_dataset.csv': f'{dlt_srcs["olist_geolocation_dataset"]}/olist_geolocation_dataset_{datetime_num_str}.csv',
+        f'{datasource_dir}/olist_order_items_dataset.csv': f'{dlt_srcs["olist_order_items_dataset"]}/olist_order_items_dataset_{datetime_num_str}.csv',
+        f'{datasource_dir}/olist_order_payments_dataset.csv': f'{dlt_srcs["olist_order_payments_dataset"]}/olist_order_payments_dataset_{datetime_num_str}.csv',
+        f'{datasource_dir}/olist_order_reviews_dataset.csv': f'{dlt_srcs["olist_order_reviews_dataset"]}/olist_order_reviews_dataset_{datetime_num_str}.csv',
+        f'{datasource_dir}/olist_orders_dataset.csv': f'{dlt_srcs["olist_orders_dataset"]}/olist_orders_dataset_{datetime_num_str}.csv',
+        f'{datasource_dir}/olist_products_dataset.csv': f'{dlt_srcs["olist_products_dataset"]}/olist_products_dataset_{datetime_num_str}.csv',
+        f'{datasource_dir}/olist_sellers_dataset.csv': f'{dlt_srcs["olist_sellers_dataset"]}/olist_sellers_dataset_{datetime_num_str}.csv',
+        f'{datasource_dir}/product_category_name_translation.csv': f'{dlt_srcs["product_category_name_translation"]}/product_category_name_translation_{datetime_num_str}.csv',
+    }
     
-    os.makedirs(orders_dir, exist_ok=True)
-    os.makedirs(order_items_dir, exist_ok=True)
-    
-    # csvデータの配置
-    source_path_orders = f"{datasource_dir}/olist_orders_dataset.csv"
-    source_path_order_items = f"{datasource_dir}/olist_order_items_dataset.csv"
-    
-    dbutils.fs.cp(source_path_orders, orders_dir+"olist_orders_dataset.csv")
-    dbutils.fs.cp(source_path_order_items, order_items_dir+"olist_order_items_dataset.csv")
+    # dlt 用のディレクトリを用意する必要が現時点でないためコメントアウト
+    # dlt 用のファイルを準備
+    # for from_path,to_path in dlt_src_files.items():
+    #     dbutils.fs.cp(from_path,to_path,True)
 
+    # dlt 実行 SQL 変数を定義
+    # for name,value in dlt_srcs.items():
+    #     spark.conf.set(f'db_hackathon4lakehouse.dlt.path.{name}',value)
+    
 if mode == "cleanup":
     spark.sql(f"DROP DATABASE IF EXISTS {database} CASCADE")
     dbutils.fs.rm(data_path, True)
-
-# COMMAND ----------
-
-
-
-# COMMAND ----------
-
-

@@ -7,6 +7,7 @@
 # MAGIC /dbfs/FileStore
 # MAGIC ├── db_openhackason_2022
 # MAGIC │   ├── datasource      <- kaggleにて提供されているCSVファイルを配置
+# MAGIC │   ├── additional_data <- `init` mode による setup 時に作成される CSV ファイルを配置
 # MAGIC │   ├── {user_name}
 # MAGIC │   │   ├── database    <- Day2で利用するデータベースのディレクトリ
 # MAGIC ```
@@ -30,7 +31,7 @@ dbutils.widgets.text("database_name", database_name)
 
 database = f"{dbutils.widgets.get('database_name')}_{user_name}"
 
-username_raw = dbutils.notebook.entry_point.getDbutils().notebook().getContext().tags().apply('user')
+username_raw = spark.sql('SELECT current_user()').first()[0]
 # Day1で利用する作業領域のディレクトリ
 data_path       = f'/FileStore/db_hackathon4lakehouse_2022/{user_name}'
 

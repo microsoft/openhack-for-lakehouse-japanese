@@ -12,7 +12,7 @@
 
 -- MAGIC %python
 -- MAGIC # 現在のデータベースを改めて確認
--- MAGIC spark.catalog.currentDatabase()
+-- MAGIC print(spark.sql('SELECT current_database()').first()[0])
 
 -- COMMAND ----------
 

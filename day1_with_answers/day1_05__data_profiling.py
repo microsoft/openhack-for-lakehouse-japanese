@@ -114,7 +114,7 @@
 # COMMAND ----------
 
 # DBTITLE 1,olist_sellers_dataset_silver のData Profileを確認する
-# MAGIC %sql -- seller.<key>を指定することで構造体の中の値にアクセスできる
+# MAGIC %sql
 # MAGIC SELECT
 # MAGIC   *
 # MAGIC FROM

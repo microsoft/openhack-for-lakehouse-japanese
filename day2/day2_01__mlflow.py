@@ -10,7 +10,7 @@
 # MAGIC 
 # MAGIC 実際にモデル学習＆デプロイまで構築するデモになります。以下のようなパイプラインを想定しております。
 # MAGIC 
-# MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/additional-images/overall_adls.png' width='1200' />
+# MAGIC <img src='https://raw.githubusercontent.com/microsoft/openhack-for-lakehouse-japanese/main/images/day2_01__mlflow/overall_adls.png' width='1200' />
 
 # COMMAND ----------
 
@@ -303,30 +303,30 @@ plot.plot_plotly(model, ml_flow_forecast)
 
 # MAGIC %md ## mlflowで作成したExperimentsをクリックします
 # MAGIC 
-# MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/images/mlflow_experiments2.jpg' />
+# MAGIC <img src='https://raw.githubusercontent.com/microsoft/openhack-for-lakehouse-japanese/main/images/day2_01__mlflow/mlflow_experiments2.jpg' />
 
 # COMMAND ----------
 
 # MAGIC %md ## mlflowから作成したモデルをModel registryに登録
 # MAGIC <br>
 # MAGIC </br>
-# MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/hackathon/mlflow-first.png' />
+# MAGIC <img src='https://raw.githubusercontent.com/microsoft/openhack-for-lakehouse-japanese/main/images/day2_01__mlflow/mlflow-first.png' />
 # MAGIC <br>
 # MAGIC </br>
 # MAGIC 
 # MAGIC **ご自身のお名前をいれたmodel名にしてください** 
 # MAGIC 
-# MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/images/register_model.jpg' />
+# MAGIC <img src='https://raw.githubusercontent.com/microsoft/openhack-for-lakehouse-japanese/main/images/day2_01__mlflow/register_model.jpg' />
 # MAGIC <br>
 # MAGIC </br>
 # MAGIC 
 # MAGIC **赤枠をクリックしてください** 
-# MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/images/regist_model2.jpg' />
+# MAGIC <img src='https://raw.githubusercontent.com/microsoft/openhack-for-lakehouse-japanese/main/images/day2_01__mlflow/regist_model2.jpg' />
 # MAGIC <br>
 # MAGIC </br>
 # MAGIC 
 # MAGIC **Transit to productionをクリックします** 
-# MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/hackathon/mlflow-second.png' />
+# MAGIC <img src='https://raw.githubusercontent.com/microsoft/openhack-for-lakehouse-japanese/main/images/day2_01__mlflow/mlflow-second.png' />
 # MAGIC <br>
 # MAGIC </br>
 # MAGIC **この作業を実施することで、DatabricksのModel Registryに登録が行われ、mlflowのAPIやsparkから呼び出すことが可能になります。modelの確認はサイドバーからでも確認可能です**
@@ -339,13 +339,13 @@ plot.plot_plotly(model, ml_flow_forecast)
 # MAGIC 
 # MAGIC 
 # MAGIC 
-# MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/hackathon/mlflow-third.png' />
+# MAGIC <img src='https://raw.githubusercontent.com/microsoft/openhack-for-lakehouse-japanese/main/images/day2_01__mlflow/mlflow-third.png' />
 
 # COMMAND ----------
 
 # MAGIC %md-sandbox ## Feature Storeに保存
 # MAGIC 
-# MAGIC <img src="https://github.com/QuentinAmbard/databricks-demo/raw/main/product_demos/mlops-end2end-flow-feature-store.png" style="float:right" width="500" />
+# MAGIC <img src="https://raw.githubusercontent.com/microsoft/openhack-for-lakehouse-japanese/main/images/day2_01__mlflow/mlops-end2end-flow-feature-store.png" style="float:right" width="500" />
 # MAGIC 
 # MAGIC 特徴量の準備ができたら、Databricks Feature Storeに保存します。
 # MAGIC その際、フィーチャーストアはDelta Lakeのテーブルでバックアップされます。

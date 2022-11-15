@@ -1,6 +1,6 @@
 -- Databricks notebook source
 -- MAGIC %md # Hack Day 1
--- MAGIC ## Challenge3. Delta Live Tablesを使ったパイプラインの構築方法
+-- MAGIC ## Challenge4. Delta Live Tablesを使ったパイプラインの構築方法
 -- MAGIC ### 本ノートブックの目的：SQLに基づくDelta Live Tablesのパイプライン構築方法を学ぶ
 
 -- COMMAND ----------

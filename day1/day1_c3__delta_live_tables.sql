@@ -1,6 +1,6 @@
 -- Databricks notebook source
 -- MAGIC %md # Hack Day 1
--- MAGIC ## Challenge2. Delta Live Tablesを使ったパイプラインの本番化
+-- MAGIC ## Challenge3. Delta Live Tablesを使ったパイプラインの本番化
 -- MAGIC ### 本ノートブックの目的：Delta Live Tablesによってパイプライン構築がモダナイズされることを実感する
 -- MAGIC 
 -- MAGIC Q1. Delta Live Tablesのセッティングを行なってください<br>

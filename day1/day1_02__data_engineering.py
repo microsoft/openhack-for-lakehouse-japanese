@@ -1,8 +1,15 @@
 # Databricks notebook source
-# MAGIC %md
-# MAGIC ## 2. データエンジニアリングパイプラインの実践
-# MAGIC Q1. データフレーム操作によりデータの書き込みを実施してください。<br>
-# MAGIC Q2. Databricksオートローダーによりデータの書き込みを実施してください。
+# MAGIC %md # Hack Day 1
+# MAGIC ## 02. データエンジニアリングパイプラインの実践(目安 10:00~11:30)
+# MAGIC ### 本ノートブックの目的：Databricksにおけるテーブル作成、データ格納処理について理解を深める
+# MAGIC Q1. Sparkデータフレーム操作によりデータの書き込みを実施してください。<br>
+# MAGIC Q2. Sparkデータフレーム操作により書き込んだデータをData Explorerとファイルレベルで確認してください。<br>
+# MAGIC Q3. COPY INTO によりデータの書き込みを実施してください。<br>
+# MAGIC Q4. Databricks Auto Loader によりデータの書き込みを実施してください。
+
+# COMMAND ----------
+
+# MAGIC %run ./includes/setup $mode="2"
 
 # COMMAND ----------
 
@@ -13,14 +20,90 @@
 
 # COMMAND ----------
 
-# MAGIC %run ./includes/setup $mode="2_1"
+# MAGIC %md
+# MAGIC #### 実践例
 
 # COMMAND ----------
 
-src_file_path__2_1 = 'dbfs:/databricks-datasets/tpch/data-001/lineitem/'
-tgt_table_name__2_1 = 'lineitme'
+src_file_path__2_1_1 = "dbfs:/databricks-datasets/tpch/data-001/customer"
+tgt_table_name__2_1_1 = "customer"
 
-schema__2_1 = """
+schema__2_1_1 = """
+  c_custkey long,
+  c_name string,
+  c_address string,
+  c_nationkey long,
+  c_phone string,
+  c_acctbal decimal(12, 2),
+  c_mktsegment string,
+  c_comment string
+"""
+
+table_ddl__2_1_1 = f"""
+    CREATE OR REPLACE TABLE {tgt_table_name__2_1_1}
+    (
+        {schema__2_1_1},
+        _src_file_path STRING
+    )
+    USING delta
+"""
+
+# COMMAND ----------
+
+# ディレクトリを確認
+display(dbutils.fs.ls(src_file_path__2_1_1))
+
+# COMMAND ----------
+
+# ソースファイルを確認
+print(dbutils.fs.head(f"{src_file_path__2_1_1}/customer.tbl", 500))
+
+# COMMAND ----------
+
+# テーブルを作成
+spark.sql(table_ddl__2_1_1)
+
+# COMMAND ----------
+
+# テーブル定義を確認
+spark.sql(f"DESC EXTENDED {tgt_table_name__2_1_1}").display()
+
+# COMMAND ----------
+
+# `src_file_path__2_1_1`変数をソースとして、区切り文字を`|`としてデータフレームを作成
+df = (
+    spark.read.format("csv")
+    .schema(schema__2_1_1)
+    .option("sep", "|")
+    .load(src_file_path__2_1_1)
+)
+
+# `_metadata.file_path`のカラム値を、ソースファイルのパスを保持したカラム（`_src_file_path`列）としてデータフレームに追加
+df = (
+    df.select("*", "_metadata")
+    .withColumn("_src_file_path", df["_metadata.file_path"])
+    .drop("_metadata")
+)
+
+# `tgt_table_name__2_1_1`変数を保存先のテーブルとして、`Delta`形式で上書き（`overwrite`）によりデータの書き込み実施
+(df.write.format("delta").mode("overwrite").saveAsTable(tgt_table_name__2_1_1))
+
+# COMMAND ----------
+
+# データをdisplay関数で表示
+spark.table(tgt_table_name__2_1_1).display()
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC #### ToDo `lineitem.tbl` をソースとして、`lineitem` テーブルにデータの書き込みを実施してください。
+
+# COMMAND ----------
+
+src_file_path__2_1_2 = "dbfs:/databricks-datasets/tpch/data-001/lineitem/"
+tgt_table_name__2_1_2 = "lineitem"
+
+schema__2_1_2 = """
   L_ORDERKEY    INTEGER ,
   L_PARTKEY     INTEGER ,
   L_SUPPKEY     INTEGER ,
@@ -39,10 +122,10 @@ schema__2_1 = """
   L_COMMENT      STRING
 """
 
-table_ddl__2_1 = f"""
-    CREATE OR REPLACE TABLE {tgt_table_name__2_1}
+table_ddl__2_1_2 = f"""
+    CREATE OR REPLACE TABLE {tgt_table_name__2_1_2}
     (
-        {schema__2_1},
+        {schema__2_1_2},
         _src_file_path STRING
     )
     USING delta
@@ -50,127 +133,356 @@ table_ddl__2_1 = f"""
 
 # COMMAND ----------
 
-# TODO 変数`table_ddl__2_1`を用いて、テーブルを作成
-spark.sql(table_ddl__2_1)
+# ToDo ディレクトリを確認
+display(dbutils.fs.ls(src_file_path__2_1_2))
+
+# COMMAND ----------
+
+# ソースファイルを確認
+print(dbutils.fs.head(f"{src_file_path__2_1_2}/lineitem.tbl", 500))
+
+# COMMAND ----------
+
+# ToDo `tgt_table_name__2_1`変数をもとにテーブルを作成
+spark.sql(table_ddl__2_1_2)
 
 # COMMAND ----------
 
 # テーブル定義を確認
-spark.sql(f'DESC EXTENDED {tgt_table_name__2_1}').display()
+spark.sql(f"DESC EXTENDED {tgt_table_name__2_1_2}").display()
 
 # COMMAND ----------
 
-from  pyspark.sql.functions import input_file_name
-
-# TODO 変数`src_file_path__2_1`をソースとして、区切り文字を`|`としてデータフレームを作成してください。
-df = spark.read.format("csv").schema(schema__2_1).option("sep", "|").load(src_file_path__2_1)
-
-# TODO 関数`input_file_name`により、ソースファイルのパスを保持したカラム（`_src_file_path`列）をデータフレームに追加してください。
-df = df.withColumn('_src_file_path', input_file_name())
-
-# TODO 変数`tgt_table_name__2_1`を保存先のテーブルとして、`Delta`形式で上書き（`overwrite`）によりデータの書き込み実施してください。
-(df
-   .write.format("delta")
-   .mode("overwrite")
-   .saveAsTable(tgt_table_name__2_1)
+# TODO 変数`src_file_path__2_1_2`をソースとして、区切り文字を`|`としてデータフレームを作成してください。
+df = (
+    spark.read.format("csv")
+    .schema(schema__2_1_2)
+    .option("sep", "|")
+    .load(src_file_path__2_1_2)
 )
 
+# TODO `_metadata.file_path`のカラム値を、ソースファイルのパスを保持したカラム（`_src_file_path`列）としてデータフレームに追加してください。
+df = (
+    df.select("*", "_metadata")
+    .withColumn("_src_file_path", df["_metadata.file_path"])
+    .drop("_metadata")
+)
+
+# TODO `tgt_table_name__2_1_2`変数を保存先のテーブルとして、`Delta`形式で上書き（`overwrite`）によりデータの書き込み実施してください。
+(df.write.format("delta").mode("overwrite").saveAsTable(tgt_table_name__2_1_2))
+
 # COMMAND ----------
 
-# ToDo 保存先のテーブル（`tgt_table_name__2_1`）のデータをdisplay関数で表示してください。
-spark.table(tgt_table_name__2_1).display()
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC **Tips** : レイテンシーに応じた処理方法の選択
-# MAGIC 
-# MAGIC データの生成からデータが利用可能になるまでの時間差（レイテンシー）要件に応じて、データ処理方法を選択する必要があります。<br>
-# MAGIC 
-# MAGIC | #    | レイテンシーに応じた処理方法                     | Databricksの実装例                                           |
-# MAGIC | ---- | ---------------------------- | ------------------------------------------------------------ |
-# MAGIC | 1    | バッチ                       | 1-1. スケジュールトリガーによるSparkデータフレーム処理<br/>1-2. Delta live tableのトリガーパイプラインによる処理 |
-# MAGIC | 2    | 準リアルタイムとイベント駆動 | 2-1. ファイル到着イベントトリガーによる実行               |
-# MAGIC | 3    | ストリーミング               | 3-1. Sparkストリーミング処理<br/>3-2. Databricksオートローダーによる処理<br/>3-3. Delta live tableの連続パイプラインによる処理 |
+# ToDo 保存先のテーブル（`tgt_table_name__2_1_2`変数）のデータをdisplay関数で表示してください。
+spark.table(tgt_table_name__2_1_2).display()
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### Q2. Databricksオートローダーによりデータの書き込みを実施してください。
+# MAGIC 
+# MAGIC ### Q2. Sparkデータフレーム操作により書き込んだデータをData Explorerとファイルレベルで確認してください。
+# MAGIC 
+# MAGIC Databricksではテーブルを作成するとカタログ（defaultではhive metastore）配下のデータベースへメタデータが登録されます<br>
+# MAGIC 登録されたテーブルをData Explorer、またファイルレベルで確認してみましょう
+# MAGIC 
+# MAGIC ToDo: 
+# MAGIC 1. 左のタブから **Data** を選択
+# MAGIC 1. Catalogsから `hive_metastore`を選択
+# MAGIC 1. DatabaseはCmd3で表示されているものを選択
+# MAGIC 1. Tablesから **lineitem** を選択する
+# MAGIC 1. 以上をSQL・Data Science & Engineering両方のモードで行い、SQLでしかできないことをまとめる
 
 # COMMAND ----------
 
-# MAGIC %run ./includes/setup $mode="2_2"
+# MAGIC %md
+# MAGIC Answer
+# MAGIC - Catalog, Database, TableのPermissionの変更
+# MAGIC - Quick Query, Dashboardによって迅速に分析を開始できる
+# MAGIC - Deltaテーブルか否かアイコンで確認できる
+# MAGIC など
 
 # COMMAND ----------
 
-tgt_table_name__2_2 = 'auto_loader_table'
+# `tgt_table_name__2_1` 変数のテーブルの保存先を取得
+tbl_path = (
+    spark.sql(f"DESC EXTENDED {tgt_table_name__2_1_2}")
+    .where('col_name = "Location"')
+    .select("data_type")
+    .first()[0]
+)
 
-schema__2_2 = """
-  CURRENT_DATETIME TIMESTAMP
+print(tbl_path)
+
+# COMMAND ----------
+
+# Deltaファイルを確認します
+# トランザクションログの_delta_logとデータファイルのparquetのセットになっていることを確認する
+display(dbutils.fs.ls(tbl_path))
+
+# COMMAND ----------
+
+# _delta_logの中身を確認する
+print(dbutils.fs.head(f"{tbl_path}/_delta_log/00000000000000000000.json"))
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Q3. COPY INTO によりデータの書き込みを実施してください。
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC #### 実践例
+
+# COMMAND ----------
+
+src_file_path__2_3_1 = "dbfs:/databricks-datasets/tpch/data-001/nation"
+tgt_table_name__2_3_1 = "nation"
+
+schema__2_3_1 = """
+  N_NATIONKEY  integer,
+  N_NAME       string,
+  N_REGIONKEY  integer, 
+  N_COMMENT    string
 """
 
-table_ddl__2_2 = f"""
-    CREATE OR REPLACE TABLE {tgt_table_name__2_2}
+drop_table_ddl__2_3_1 = f"""
+DROP TABLE IF EXISTS {tgt_table_name__2_3_1}
+"""
+create_table_ddl__2_3_1 = f"""
+    CREATE OR REPLACE TABLE {tgt_table_name__2_3_1}
     (
-        {schema__2_2}
+        {schema__2_3_1},
+        _src_file_path STRING
     )
     USING delta
 """
 
+# COMMAND ----------
+
+# テーブルを作成
+spark.sql(drop_table_ddl__2_3_1)
+spark.sql(create_table_ddl__2_3_1)
+
+# COMMAND ----------
+
+# COPY INTO によりデータを書き込む
+retruned_df = spark.sql(
+    f"""
+COPY INTO {tgt_table_name__2_3_1}
+  FROM  (
+    SELECT
+      _c0::integer AS N_NATIONKEY
+      ,_c1 AS N_NAME
+      ,_c2::integer AS N_REGIONKEY 
+      ,_c3 AS N_COMMENT
+      ,_metadata.file_path AS _src_file_path
+
+      FROM
+        '{src_file_path__2_3_1}'
+  )
+  FILEFORMAT = CSV
+  FORMAT_OPTIONS (
+    'mergeSchema' = 'true'
+    ,'ignoreCorruptFiles' = 'false'
+    ,'sep' = '|'
+    ,'inferSchema' = 'false'
+  )
+  COPY_OPTIONS (
+    'mergeSchema' = 'true'
+    -- ファイル再取り込み時には、`force` を `true` に設定
+    -- ,'force' = 'true'
+  )
+"""
+)
+
+retruned_df.display()
+
+# COMMAND ----------
+
+# データをdisplay関数で表示
+spark.table(tgt_table_name__2_3_1).display()
+
+# COMMAND ----------
+
+# 再取り込みを実施しても 25 件となることを確認
+print(spark.table(tgt_table_name__2_3_1).count())
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC #### ToDo `orders.tbl` をソースとして、`orders` テーブルにデータの書き込みを実施してください。
+
+# COMMAND ----------
+
+src_file_path__2_3_2 = "dbfs:/databricks-datasets/tpch/data-001/orders"
+tgt_table_name__2_3_2 = "orders"
+
+schema__2_3_2 = """
+    o_orderkey long,
+    o_custkey long,
+    o_orderstatus string,
+    o_totalprice decimal(12, 2),
+    o_orderdate date,
+    o_orderpriority string,
+    o_clerk string,
+    o_shippriority int,
+    o_comment string
+"""
+
+drop_table_ddl__2_3_2 = f"""
+DROP TABLE IF EXISTS {tgt_table_name__2_3_2}
+"""
+create_table_ddl__2_3_2 = f"""
+    CREATE OR REPLACE TABLE {tgt_table_name__2_3_2}
+    (
+        {schema__2_3_2},
+        _src_file_path STRING
+    )
+    USING delta
+"""
+
+# COMMAND ----------
+
+# テーブルを作成
+spark.sql(drop_table_ddl__2_3_2)
+spark.sql(create_table_ddl__2_3_2)
+
+# COMMAND ----------
+
+# ToDo COPY INTO によりデータを書き込む
+retruned_df = spark.sql(
+    f"""
+COPY INTO {tgt_table_name__2_3_2}
+  FROM  (
+    SELECT
+      _c0::long AS o_orderkey ,
+      _c1::long AS o_custkey ,
+      _c2 AS o_orderstatus,
+      _c3::decimal(12, 2) AS o_totalprice ,
+      _c4::date AS o_orderdate,
+      _c5 AS o_orderpriority,
+      _c6 AS o_clerk,
+      _c7::int AS o_shippriority,
+      _c8 AS o_comment
+      ,_metadata.file_path AS _src_file_path
+
+      FROM
+        '{src_file_path__2_3_2}'
+  )
+  FILEFORMAT = CSV
+  FORMAT_OPTIONS (
+    'mergeSchema' = 'true'
+    ,'ignoreCorruptFiles' = 'false'
+    ,'sep' = '|'
+    ,'inferSchema' = 'false'
+  )
+  COPY_OPTIONS (
+    'mergeSchema' = 'true'
+    -- ファイル再取り込み時には、`force` を `true` に設定
+    -- ,'force' = 'true'
+  )
+"""
+)
+
+retruned_df.display()
+
+# COMMAND ----------
+
+# データをdisplay関数で表示
+spark.table(tgt_table_name__2_3_2).display()
+
+# COMMAND ----------
+
+# 再取り込みを実施しても 7,500,000 件となることを確認
+print(spark.table(tgt_table_name__2_3_2).count())
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Q4. Databricks Auto Loader によりデータの書き込みを実施してください。
+
+# COMMAND ----------
+
+# MAGIC %run ./includes/setup $mode="2_4"
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC #### 実践例
+
+# COMMAND ----------
+
+src_file_path__2_4_1 = f"{data_path}/auto_loader/{user_name}/src"
+tgt_table_name__2_4_1 = "auto_loader_table"
+
+schema__2_4_1 = """
+  CURRENT_DATETIME TIMESTAMP
+"""
+
+table_ddl__2_4_1 = f"""
+CREATE OR REPLACE TABLE {tgt_table_name__2_4_1}
+(
+    {schema__2_4_1}
+    ,_src_file_path STRING
+)
+USING delta
+"""
+
 # Auto Loaderの手順で利用する変数を定義
-src_file_dir__2_2   = f'{data_path}/auto_loader/{user_name}/src'
-src_file_path__2_2   = f'{src_file_dir__2_2}/*'
-checkpoint_path__2_2 = f'{data_path}/auto_loader/{user_name}/_checkpoints'
-
-# COMMAND ----------
-
-# 初期ファイルを配置
-dbutils.fs.rm(src_file_dir__2_2, True)
-dbutils.fs.rm(checkpoint_path__2_2, True)
-put_files(src_file_dir__2_2)
-display(dbutils.fs.ls(src_file_dir__2_2))
-
-# COMMAND ----------
-
-# TODO 変数`table_ddl__2_2`を用いて、テーブルを作成してください。
-spark.sql(table_ddl__2_2)
-
-# COMMAND ----------
-
-# テーブル定義を確認
-spark.sql(f'DESC EXTENDED {tgt_table_name__2_2}').display()
-
-# COMMAND ----------
-
-display(dbutils.fs.ls(src_file_dir__2_2))
-
-# COMMAND ----------
-
-# ToDo Databricks Auto loaderにて、変数`schema__2_2`をスキーマに指定して、変数`src_file_path__2_2`をCSVファイルのソースとして読み込みを実施してください。
-df__2_2 = (spark
-             .readStream.format('cloudFiles') \
-             .option('cloudFiles.format', 'csv') \
-             .schema(schema__2_2) \
-             .load(src_file_path__2_2)
-          )
- 
-# ToDo 変数`checkpoint_path`をチェックポイントとして指定して、ストリーム書き込み処理を実施してください。
-(df__2_2
-   .writeStream
-   .format('delta') \
-   .option('checkpointLocation', checkpoint_path__2_2) \
-   .start(tgt_table_name__2_2)
+checkpoint_path__2_4_1 = (
+    f"{data_path}/auto_loader/{user_name}/_checkpoints/auto_loader_table"
 )
 
 # COMMAND ----------
 
-display(spark.readStream.table(tgt_table_name__2_2))
+# 初期ファイルを配置
+dbutils.fs.rm(src_file_path__2_4_1, True)
+dbutils.fs.rm(checkpoint_path__2_4_1, True)
+put_files(src_file_path__2_4_1)
+display(dbutils.fs.ls(src_file_path__2_4_1))
+
+# COMMAND ----------
+
+# 変数`table_ddl__2_4_1`を用いて、テーブルを作成してください。
+spark.sql(table_ddl__2_4_1)
+
+# COMMAND ----------
+
+# テーブル定義を確認
+spark.sql(f"DESC EXTENDED {tgt_table_name__2_4_1}").display()
+
+# COMMAND ----------
+
+# Databricks Auto loaderにて、`schema__2_4_1`変数をスキーマとして指定して、`src_file_path__2_4_1`変数をCSVファイルのソースとして読み込みを実施
+df__2_4_1 = (
+    spark.readStream.format("cloudFiles")
+    .option("cloudFiles.format", "csv")
+    .option("cloudFiles.schemaHints", schema__2_4_1)
+    .schema(schema__2_4_1)
+    .load(src_file_path__2_4_1)
+)
+
+# `_metadata.file_path`のカラム値を、ソースファイルのパスを保持したカラム（`_src_file_path`列）としてデータフレームに追加
+df__2_4_1 = df__2_4_1.withColumn("_src_file_path", df__2_4_1["_metadata.file_path"])
+
+
+# `checkpoint_path`変数をチェックポイントとして指定して、ストリーム書き込み処理を実施
+(
+    df__2_4_1.writeStream.format("delta")
+    .option("checkpointLocation", checkpoint_path__2_4_1)
+    .table(tgt_table_name__2_4_1)
+)
+
+# COMMAND ----------
+
+# データをdisplay関数で表示
+display(spark.readStream.table(tgt_table_name__2_4_1))
 
 # COMMAND ----------
 
 # ファイルの再配置を行い、上記セルの表示結果が変わることを確認
-put_files(src_file_dir__2_2)
+put_files(src_file_path__2_4_1)
 
 # COMMAND ----------
 
@@ -180,4 +492,75 @@ for stream in spark.streams.active:
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC #### ToDo `region.tbl` をソースとして、`region` テーブルにデータの書き込みを実施してください。
 
+# COMMAND ----------
+
+src_file_path__2_4_2 = "dbfs:/databricks-datasets/tpch/data-001/region"
+tgt_table_name__2_4_2 = "region"
+
+schema__2_4_2 = """
+    r_regionkey long,
+    r_name string,
+    r_comment string
+"""
+
+drop_table_ddl__2_4_2 = f"""
+DROP TABLE IF EXISTS {tgt_table_name__2_4_2}
+"""
+create_table_ddl__2_4_2 = f"""
+    CREATE OR REPLACE TABLE {tgt_table_name__2_4_2}
+    (
+        {schema__2_4_2},
+        _src_file_path STRING
+    )
+    USING delta
+"""
+
+# Auto Loaderの手順で利用する変数を定義
+checkpoint_path__2_4_2 = f"{data_path}/auto_loader/{user_name}/_checkpoints/region"
+
+# COMMAND ----------
+
+# テーブルを作成
+spark.sql(drop_table_ddl__2_4_2)
+spark.sql(create_table_ddl__2_4_2)
+
+# checkpoint を初期化
+dbutils.fs.rm(checkpoint_path__2_4_2, True)
+
+# COMMAND ----------
+
+# ToDo Databricks Auto Loader によりデータの書き込みを実施してください。
+# Databricks Auto loaderにて、変数`schema__2_4_2`をスキーマに指定して、`src_file_path__2_4_1`変数をCSVファイルのソースとして読み込みを実施。
+df__2_4_2 = (
+    spark.readStream.format("cloudFiles")
+    .option("cloudFiles.format", "csv")
+    .option("cloudFiles.schemaLocation", checkpoint_path__2_4_2)
+    .option("cloudFiles.schemaHints", schema__2_4_2)
+    .option("sep", "|")
+    .schema(schema__2_4_2)
+    .load(src_file_path__2_4_2)
+)
+
+# `_metadata.file_path`のカラム値を、ソースファイルのパスを保持したカラム（`_src_file_path`列）としてデータフレームに追加
+df__2_4_2 = df__2_4_2.withColumn("_src_file_path", df__2_4_2["_metadata.file_path"])
+
+# `checkpoint_path`変数をチェックポイントとして指定して、ストリーム書き込み処理を実施。
+(
+    df__2_4_2.writeStream.trigger(availableNow=True)
+    .option("checkpointLocation", checkpoint_path__2_4_2)
+    .toTable(tgt_table_name__2_4_2)
+)
+
+# COMMAND ----------
+
+# データを display 関数で表示
+spark.table(tgt_table_name__2_4_2).display()
+
+# COMMAND ----------
+
+# ストリーム処理を停止
+for stream in spark.streams.active:
+    stream.stop()

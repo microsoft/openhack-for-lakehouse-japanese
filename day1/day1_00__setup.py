@@ -1,5 +1,5 @@
 # Databricks notebook source
-# MAGIC %md
+# MAGIC %md # Hack Day 1
 # MAGIC ## データベースを作成
 
 # COMMAND ----------

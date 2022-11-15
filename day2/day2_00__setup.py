@@ -1,10 +1,11 @@
 # Databricks notebook source
-# MAGIC %md
+# MAGIC %md # Hack Day 2
 # MAGIC ## データベースを作成
 
 # COMMAND ----------
 
-# MAGIC %run ./includes/setup $mode="init"
+# DBTITLE 1,Day 1 にてデータベースを作成しているため実行は不要
+# %run ./includes/setup $mode="init"
 
 # COMMAND ----------
 

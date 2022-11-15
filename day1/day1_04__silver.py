@@ -19,7 +19,7 @@
 # MAGIC 今回利用するデータセットの関連図です。
 # MAGIC 
 # MAGIC <br>
-# MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/images/olist_data_relation.png' width='800' />
+# MAGIC <img src='https://raw.githubusercontent.com/microsoft/openhack-for-lakehouse-japanese/main/images/day1_04__silver/olist_data_relation.png' width='800' />
 # MAGIC </br>
 # MAGIC 
 # MAGIC <br>

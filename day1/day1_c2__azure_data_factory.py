@@ -1,6 +1,6 @@
 # Databricks notebook source
 # MAGIC %md # Hack Day 1
-# MAGIC ## Challenge4. Azure Data Factory と Azure Databricks の連携
+# MAGIC ## Challenge2. Azure Data Factory と Azure Databricks の連携
 # MAGIC ### 本ノートブックの目的：Azure Data Factory から Azure Databricks ノートブックを実行する方法を学ぶ
 # MAGIC - Q1. Data Factory スタジオにアクセスしてください
 # MAGIC - Q2. Data Factory のパイプラインを作成してください

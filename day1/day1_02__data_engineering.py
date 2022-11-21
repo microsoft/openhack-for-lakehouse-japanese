@@ -143,7 +143,7 @@ table_ddl__2_1_2 = f"""
 
 # COMMAND ----------
 
-# ToDo `tgt_table_name__2_1_2`変数をもとにテーブルを作成
+# ToDo `table_ddl__2_1_2`変数をもとにテーブルを作成
 <<FILL-IN>>
 
 # COMMAND ----------

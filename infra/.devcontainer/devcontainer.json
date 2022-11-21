@@ -1,0 +1,30 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.241.1/containers/azure-bicep
+{
+	"name": "Azure Bicep (Community)",
+	"dockerFile": "Dockerfile",
+	"runArgs": ["--env-file",".devcontainer/devcontainer.env"],
+	// Configure tool-specific properties.
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			// Add the IDs of extensions you want installed when the container is created.
+			"extensions": [
+				"ms-vscode.azurecli",
+				"ms-dotnettools.vscode-dotnet-runtime",
+				"ms-azuretools.vscode-bicep"
+			]
+		}
+	},
+	
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "vscode",
+	"features": {
+		"git": "latest",
+		"azure-cli": "latest",
+		"python": "latest"
+	}
+}

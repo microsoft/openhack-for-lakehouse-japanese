@@ -1,0 +1,30 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "location": {
+        "value": "japaneast"
+      },
+      "project": {
+        "value": "oph-lh"
+      },
+      "deployment_id": {
+        "value": "00"
+      },
+      "rg_trainer_name": {
+        "value": "Hands-on-Master"
+      },
+      "isTrainerSetUp": {
+        "value": true
+      },
+      "rg_student_names" : {
+        "value": [
+          "Hands-on-WorkGroup-A",
+          "Hands-on-WorkGroup-B",
+          "Hands-on-WorkGroup-C",
+          "Hands-on-WorkGroup-D",
+          "Hands-on-WorkGroup-E"
+        ]
+      }
+    }
+  }

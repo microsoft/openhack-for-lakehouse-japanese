@@ -40,7 +40,7 @@
 -- MAGIC 1. **Create Pipeline**をクリックします。
 -- MAGIC 1. **Product Edition**は**Advanced**のままにします。
 -- MAGIC 1. **Pipeline name**を入力します。これらの名前は一意である必要があるため、上記のセルに記載されている **`Pipeline Name`** を使用することをおすすめします。
--- MAGIC 1. **Notebook Libraries**では、ナビゲーターを使って**day1_c3__explore_dlt**という付録のノートブックを探して選択します。
+-- MAGIC 1. **Notebook Libraries**では、ナビゲーターを使って**day1_c4__explore_dlt**という付録のノートブックを探して選択します。
 -- MAGIC    * このドキュメントは標準のDatabricksノートブックですが、SQL構文はDLTテーブル宣言に特化しています。
 -- MAGIC    * 次のエクササイズでは、構文について見ていきます。
 -- MAGIC 1. **Target**フィールドに、上記のセルで **`database`** の隣に表示されているデータベースの名前を指定します。<br/> データベースの名前は、 **`db_hackathon4lakehouse_<username>`** というパターンに従っているはずです。

@@ -1,6 +1,6 @@
 # Databricks notebook source
 # MAGIC %md # Hack Day 1
-# MAGIC ## 03. メダリオンアーキテクチャ構築の実践 - Bronze - (目安 11:30~12:00 + 13:45~14:15)
+# MAGIC ## 03. メダリオンアーキテクチャ構築の実践 - Bronze - (目安 12:30~13:00 + 14:15~14:45)
 # MAGIC ### 本ノートブックの目的：DatabricksにおけるBronze Tableの役割・取り扱いについて理解を深める
 # MAGIC Q1. Bronzeテーブルのパイプラインを作成してください。<br>
 # MAGIC Q2. 半構造化データをbronzeテーブルとして読み込んでください。<br>

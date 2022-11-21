@@ -1,11 +1,12 @@
 # Databricks notebook source
 # MAGIC %md # Hack Day 2
 # MAGIC 
-# MAGIC ## 02. AutoMLによる売上予測モデル作成 (目安 13:45~14:45)
+# MAGIC ## 02. AutoMLによる売上予測モデル作成 (目安 12:30~13:00 + 14:00~14:30)
 # MAGIC ### 本ノートブックの目的：AutoMLを使ったモデル開発について理解を深める
 # MAGIC Q1. 下記を参考にAutomlを使って、売上予測モデルを作成してください<br>
 # MAGIC Q2. モデルごとのmetrics比較を行なってください<br>
 # MAGIC Q3. ベストノートブックからのチューニングを行なってください<br>
+# MAGIC 
 # MAGIC このノートブックでは、01で作ったFeature Store上のデータを使ってベストなモデルを作成します。
 
 # COMMAND ----------
@@ -92,7 +93,8 @@
 # COMMAND ----------
 
 # MAGIC %md ## パラメータを変更
-# MAGIC 赤枠の箇所を変更・追記して、notebookの上位にあるRun Allをクリックしてください
+# MAGIC 赤枠の箇所を変更・追記して、notebookの上位にあるRun Allをクリックしてください<br>
+# MAGIC (ML ランタイムの Databricks クラスターでの実行を想定しています)
 
 # COMMAND ----------
 

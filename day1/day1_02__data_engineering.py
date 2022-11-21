@@ -194,7 +194,7 @@ spark.sql(f"DESC EXTENDED {tgt_table_name__2_1_2}").display()
 
 # COMMAND ----------
 
-# `tgt_table_name__2_1` 変数のテーブルの保存先を取得
+# `tgt_table_name__2_1_2` 変数のテーブルの保存先を取得
 tbl_path = (
     spark.sql(f"DESC EXTENDED {tgt_table_name__2_1_2}")
     .where('col_name = "Location"')

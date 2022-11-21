@@ -133,17 +133,17 @@ table_ddl__2_1_2 = f"""
 
 # COMMAND ----------
 
-# ディレクトリを確認
-display(dbutils.fs.ls(src_file_path__2_1_2))
+# ToDo `src_file_path__2_1_2`変数をもとにディレクトリを確認
+<<FILL-IN>>
 
 # COMMAND ----------
 
-# ソースファイルを確認
-print(dbutils.fs.head(f"{src_file_path__2_1_2}/lineitem.tbl", 500))
+# ToDo ソースファイルを確認
+<<FILL-IN>>
 
 # COMMAND ----------
 
-# ToDo `tgt_table_name__2_1`変数をもとにテーブルを作成
+# ToDo `src_file_path__2_1_2`変数をもとにテーブルを作成
 <<FILL-IN>>
 
 # COMMAND ----------

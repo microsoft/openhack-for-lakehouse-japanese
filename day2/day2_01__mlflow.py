@@ -275,7 +275,7 @@ with mlflow.start_run(run_name="olist_predict_sales") as run:
     
     # cross_validationの値を変えて、いろいろ試してもらう
     metrics_raw = cross_validation(
-        <<FILL-IN
+        <<FILL-IN>>
     )
     cv_metrics = performance_metrics(metrics_raw)
     metrics = {k: cv_metrics[k].mean() for k in metric_keys}

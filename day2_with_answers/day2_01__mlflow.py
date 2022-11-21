@@ -96,7 +96,6 @@ sales2017_DF = df_renamed \
                   
 
 # 2018年の売上データを抽出
-# 問題にしてもいいかも
 sales2018_DF = df_renamed \
                   .select(col('ds'), year('ds').alias('year'), col('y')) \
                   .filter(col('year') ==  '2018') \

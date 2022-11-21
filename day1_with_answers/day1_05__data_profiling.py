@@ -1,6 +1,6 @@
 # Databricks notebook source
 # MAGIC %md # Hack Day 1
-# MAGIC ## 05. メダリオンアーキテクチャ構築の実践 - Data Profile - (目安 14:15~14:45)
+# MAGIC ## 05. メダリオンアーキテクチャ構築の実践 - Data Profile - (目安 15:10~15:40)
 # MAGIC ### 本ノートブックの目的：Data Profile機能を使った、数値・文字列・日付の各列の基本統計量と各列の値分布のヒストグラムの表示方法を理解する
 # MAGIC Q1. Data Profileを確認して前処理方針を決定しよう
 

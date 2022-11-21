@@ -1,6 +1,6 @@
 -- Databricks notebook source
 -- MAGIC %md # Hack Day 1
--- MAGIC ## 06. メダリオンアーキテクチャ構築の実践 - Gold Table - (目安 15:10~15:15)
+-- MAGIC ## 06. メダリオンアーキテクチャ構築の実践 - Gold Table - (目安 15:45~16:00)
 -- MAGIC ### 本ノートブックの目的：DatabricksにおけるGold Tableの役割・取り扱いについて理解を深める
 -- MAGIC Q1. Gold Tableのパイプラインを作成してください
 

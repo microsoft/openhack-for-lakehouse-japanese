@@ -1,6 +1,6 @@
 -- Databricks notebook source
 -- MAGIC %md # Hack Day 1
--- MAGIC ## Challenge1. 日別受注金額データの可視化 (Databricks SQL)  (目安 15:15~16:15)
+-- MAGIC ## Challenge1. 日別受注金額データの可視化 (Databricks SQL)  (目安 16:00~16:45)
 -- MAGIC Q1. Databricks SQLにてクエリを作成してください。<br>
 -- MAGIC Q2. Databricks SQLにて、日別受注金額に関する下記の項目を保持したDashboardを作成してください。<br>
 -- MAGIC Q3. 日別受注金額を保持したゴールドテーブル（daily_order_amounts）を作成してください。<br>

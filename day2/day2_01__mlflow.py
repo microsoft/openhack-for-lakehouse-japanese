@@ -1,6 +1,6 @@
 # Databricks notebook source
 # MAGIC %md # Hack Day 2
-# MAGIC ## 01. MLFlow & Prophetを使った売上予測モデル作成 (目安 10:00~12:00)
+# MAGIC ## 01. MLFlow & Prophetを使った売上予測モデル作成 (目安 10:30~12:30)
 # MAGIC ### 本ノートブックの目的：MLflowを使ったモデル開発について理解を深める
 # MAGIC Q1. ゴールドテーブルをロードする<br>
 # MAGIC Q2. データをfiltering<br>
@@ -8,6 +8,7 @@
 # MAGIC Q4. prophetのmodel作成<br>
 # MAGIC Q5. mlflowで管理
 # MAGIC 
+# MAGIC 本ノートブックは ML ランタイムの Databricks クラスターでの実行を想定しています。<br>
 # MAGIC 実際にモデル学習＆デプロイまで構築するデモになります。以下のようなパイプラインを想定しております。
 # MAGIC 
 # MAGIC <img src='https://raw.githubusercontent.com/microsoft/openhack-for-lakehouse-japanese/main/images/day2_01__mlflow/overall_adls.png' width='1200' />
@@ -94,7 +95,6 @@ sales2017_DF = << FILL IN >>
                   
 
 # 2018年の売上データを抽出
-# 問題にしてもいいかも
 sales2018_DF = << FILL IN >>
                   
 
@@ -276,7 +276,7 @@ with mlflow.start_run(run_name="olist_predict_sales") as run:
     
     # cross_validationの値を変えて、いろいろ試してもらう
     metrics_raw = cross_validation(
-        <<FILL-IN
+        <<FILL-IN>>
     )
     cv_metrics = performance_metrics(metrics_raw)
     metrics = {k: cv_metrics[k].mean() for k in metric_keys}

@@ -139,28 +139,16 @@ spark.sql(f"""DESC EXTENDED {tgt_table_name__3_1_2}""").display()
 # COMMAND ----------
 
 # ToDo `src_file_path__3_1_2`変数をソースとしてデータを読み込む
-df = (
-    spark.read.format("csv")
-    .option("header", "true")
-    .option("inferSchema", "False")
-    .load(src_file_path__3_1_2)
-)
+<<FILL-IN>>
+
 
 # ToDo 監査列として`_datasource`列と`_ingest_timestamp`列を追加
-df = (
-    df.select("*", "_metadata")
-    .withColumn("_datasource", df["_metadata.file_path"])
-    .withColumn("_ingest_timestamp", df["_metadata.file_modification_time"])
-    .drop("_metadata")
-)
+<<FILL-IN>>
+
 
 # ToDo `tgt_table_name__3_1_2`変数のテーブルへ`append`によりデータの書き込みを実施してください。
-(
-    df.write.format("delta")
-    .mode("append")
-    .option("mergeSchema", "true")
-    .saveAsTable(tgt_table_name__3_1_2)
-)
+<<FILL-IN>>
+
 
 # COMMAND ----------
 
@@ -295,14 +283,7 @@ spark.table(tgt_table_name__3_2_1).display()
 # COMMAND ----------
 
 # ToDo  `seller`列にある`city`の項目のみを表示するデータを表示してください。
-spark.sql(
-    f"""
-SELECT
-  seller.city
-  FROM 
-    {tgt_table_name__3_2_1}
-"""
-).display()
+spark.sql(<<FILL-IN>>).display()
 
 # COMMAND ----------
 

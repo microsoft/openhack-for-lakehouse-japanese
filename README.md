@@ -5,7 +5,7 @@
 Azure Databricks ワークスペースで本リポジトリのノートブックを参照するには以下 2 つの方法があります。
 
 1. Azure Databricks の [Repos](https://learn.microsoft.com/ja-jp/azure/databricks/repos/) 機能を用いて、Azure Databricks ワークスペースに本リポジトリをクローンする
-2. 本リポジトリの [releases](https://github.com/microsoft/openhack-for-lakehouse-japanese/releases) に添付された最新の Databricks ノートブック (dbc) ファイルをダウンロードし Azure Databricks ワークスペースにインポートする
+2. 本リポジトリの [Releases](https://github.com/microsoft/openhack-for-lakehouse-japanese/releases) に添付された最新の Databricks ノートブック (dbc) ファイルをダウンロードし Azure Databricks ワークスペースにインポートする
 
 ## リポジトリ構造
 本リポジトリのフォルダ構造は以下の通りです。

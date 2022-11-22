@@ -1,7 +1,7 @@
 # Databricks notebook source
 # MAGIC %md # Hack Day 2
 # MAGIC 
-# MAGIC ## 03. モデルデプロイ・モニタリング　(目安 14:45~16:15)
+# MAGIC ## 03. モデルデプロイ・モニタリング　(目安 14:30~16:00)
 # MAGIC ### 本ノートブックの目的：MLFlowを使ったモデルデプロイ・モニタリング方法について理解を深める
 # MAGIC Q1. Dataload復習<br>
 # MAGIC Q2. Schema Check<br>
@@ -11,8 +11,9 @@
 # MAGIC Q6. 予測の解離<br>
 # MAGIC Challenge2 モデルドリフト<br>
 # MAGIC 
-# MAGIC このノートブックでは、01で作ったFeature Store上のデータを使ってベストなモデルを作成します。
-# MAGIC 売上予測データを追加した状態で機械学習を行います。
+# MAGIC 本ノートブックでは、01で作ったFeature Store上のデータを使ってベストなモデルを作成します。<br>
+# MAGIC 売上予測データを追加した状態で機械学習を行います。<br>
+# MAGIC 本ノートブックは ML ランタイムの Databricks クラスターでの実行を想定しています。<br>
 
 # COMMAND ----------
 

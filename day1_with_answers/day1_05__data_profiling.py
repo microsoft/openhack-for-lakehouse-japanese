@@ -1,6 +1,6 @@
 # Databricks notebook source
 # MAGIC %md # Hack Day 1
-# MAGIC ## 05. メダリオンアーキテクチャ構築の実践 - Data Profile - (目安 14:15~14:45)
+# MAGIC ## 05. メダリオンアーキテクチャ構築の実践 - Data Profile - (目安 15:10~15:40)
 # MAGIC ### 本ノートブックの目的：Data Profile機能を使った、数値・文字列・日付の各列の基本統計量と各列の値分布のヒストグラムの表示方法を理解する
 # MAGIC Q1. Data Profileを確認して前処理方針を決定しよう
 
@@ -16,7 +16,7 @@
 # MAGIC 今回利用するデータセットの関連図です。
 # MAGIC 
 # MAGIC <br>
-# MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/images/olist_data_relation.png' width='800' />
+# MAGIC <img src='https://raw.githubusercontent.com/microsoft/openhack-for-lakehouse-japanese/main/images/day1_05__data_profiling/olist_data_relation.png' width='800' />
 # MAGIC </br>
 # MAGIC 
 # MAGIC <br>

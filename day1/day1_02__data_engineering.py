@@ -1,6 +1,6 @@
 # Databricks notebook source
 # MAGIC %md # Hack Day 1
-# MAGIC ## 02. データエンジニアリングパイプラインの実践(目安 10:00~11:30)
+# MAGIC ## 02. データエンジニアリングパイプラインの実践 (目安 11:00~12:30)
 # MAGIC ### 本ノートブックの目的：Databricksにおけるテーブル作成、データ格納処理について理解を深める
 # MAGIC Q1. Sparkデータフレーム操作によりデータの書き込みを実施してください。<br>
 # MAGIC Q2. Sparkデータフレーム操作により書き込んだデータをData Explorerとファイルレベルで確認してください。<br>
@@ -133,18 +133,18 @@ table_ddl__2_1_2 = f"""
 
 # COMMAND ----------
 
-# ToDo ディレクトリを確認
-display(dbutils.fs.ls(src_file_path__2_1_2))
+# ToDo `src_file_path__2_1_2`変数をもとにディレクトリを確認
+<<FILL-IN>>
 
 # COMMAND ----------
 
-# ソースファイルを確認
-print(dbutils.fs.head(f"{src_file_path__2_1_2}/lineitem.tbl", 500))
+# ToDo ソースファイルを確認
+<<FILL-IN>>
 
 # COMMAND ----------
 
-# ToDo `tgt_table_name__2_1`変数をもとにテーブルを作成
-spark.sql(table_ddl__2_1_2)
+# ToDo `table_ddl__2_1_2`変数をもとにテーブルを作成
+<<FILL-IN>>
 
 # COMMAND ----------
 
@@ -154,27 +154,18 @@ spark.sql(f"DESC EXTENDED {tgt_table_name__2_1_2}").display()
 # COMMAND ----------
 
 # TODO 変数`src_file_path__2_1_2`をソースとして、区切り文字を`|`としてデータフレームを作成してください。
-df = (
-    spark.read.format("csv")
-    .schema(schema__2_1_2)
-    .option("sep", "|")
-    .load(src_file_path__2_1_2)
-)
+<<FILL-IN>>
 
 # TODO `_metadata.file_path`のカラム値を、ソースファイルのパスを保持したカラム（`_src_file_path`列）としてデータフレームに追加してください。
-df = (
-    df.select("*", "_metadata")
-    .withColumn("_src_file_path", df["_metadata.file_path"])
-    .drop("_metadata")
-)
+<<FILL-IN>>
 
 # TODO `tgt_table_name__2_1_2`変数を保存先のテーブルとして、`Delta`形式で上書き（`overwrite`）によりデータの書き込み実施してください。
-(df.write.format("delta").mode("overwrite").saveAsTable(tgt_table_name__2_1_2))
+<<FILL-IN>>
 
 # COMMAND ----------
 
 # ToDo 保存先のテーブル（`tgt_table_name__2_1_2`変数）のデータをdisplay関数で表示してください。
-spark.table(tgt_table_name__2_1_2).display()
+<<FILL-IN>>
 
 # COMMAND ----------
 
@@ -203,7 +194,7 @@ spark.table(tgt_table_name__2_1_2).display()
 
 # COMMAND ----------
 
-# `tgt_table_name__2_1` 変数のテーブルの保存先を取得
+# `tgt_table_name__2_1_2` 変数のテーブルの保存先を取得
 tbl_path = (
     spark.sql(f"DESC EXTENDED {tgt_table_name__2_1_2}")
     .where('col_name = "Location"')
@@ -350,40 +341,8 @@ spark.sql(create_table_ddl__2_3_2)
 
 # COMMAND ----------
 
-# ToDo COPY INTO によりデータを書き込む
-retruned_df = spark.sql(
-    f"""
-COPY INTO {tgt_table_name__2_3_2}
-  FROM  (
-    SELECT
-      _c0::long AS o_orderkey ,
-      _c1::long AS o_custkey ,
-      _c2 AS o_orderstatus,
-      _c3::decimal(12, 2) AS o_totalprice ,
-      _c4::date AS o_orderdate,
-      _c5 AS o_orderpriority,
-      _c6 AS o_clerk,
-      _c7::int AS o_shippriority,
-      _c8 AS o_comment
-      ,_metadata.file_path AS _src_file_path
-
-      FROM
-        '{src_file_path__2_3_2}'
-  )
-  FILEFORMAT = CSV
-  FORMAT_OPTIONS (
-    'mergeSchema' = 'true'
-    ,'ignoreCorruptFiles' = 'false'
-    ,'sep' = '|'
-    ,'inferSchema' = 'false'
-  )
-  COPY_OPTIONS (
-    'mergeSchema' = 'true'
-    -- ファイル再取り込み時には、`force` を `true` に設定
-    -- ,'force' = 'true'
-  )
-"""
-)
+# ToDo COPY INTO により、`src_file_path__2_3_2`変数をソースとして`tgt_table_name__2_3_2`変数のテーブルへデータを書き込みを実施してください。
+retruned_df = <<FILL-IN>>
 
 retruned_df.display()
 
@@ -534,15 +493,7 @@ dbutils.fs.rm(checkpoint_path__2_4_2, True)
 
 # ToDo Databricks Auto Loader によりデータの書き込みを実施してください。
 # Databricks Auto loaderにて、変数`schema__2_4_2`をスキーマに指定して、`src_file_path__2_4_1`変数をCSVファイルのソースとして読み込みを実施。
-df__2_4_2 = (
-    spark.readStream.format("cloudFiles")
-    .option("cloudFiles.format", "csv")
-    .option("cloudFiles.schemaLocation", checkpoint_path__2_4_2)
-    .option("cloudFiles.schemaHints", schema__2_4_2)
-    .option("sep", "|")
-    .schema(schema__2_4_2)
-    .load(src_file_path__2_4_2)
-)
+df__2_4_2 = <<FILL-IN>>
 
 # `_metadata.file_path`のカラム値を、ソースファイルのパスを保持したカラム（`_src_file_path`列）としてデータフレームに追加
 df__2_4_2 = df__2_4_2.withColumn("_src_file_path", df__2_4_2["_metadata.file_path"])

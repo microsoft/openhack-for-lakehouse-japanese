@@ -1,6 +1,6 @@
 # Databricks notebook source
 # MAGIC %md # Hack Day 1
-# MAGIC ## 02. データエンジニアリングパイプラインの実践(目安 10:00~11:30)
+# MAGIC ## 02. データエンジニアリングパイプラインの実践 (目安 11:00~12:30)
 # MAGIC ### 本ノートブックの目的：Databricksにおけるテーブル作成、データ格納処理について理解を深める
 # MAGIC Q1. Sparkデータフレーム操作によりデータの書き込みを実施してください。<br>
 # MAGIC Q2. Sparkデータフレーム操作により書き込んだデータをData Explorerとファイルレベルで確認してください。<br>
@@ -196,10 +196,10 @@ spark.table(tgt_table_name__2_1_2).display()
 
 # MAGIC %md
 # MAGIC Answer
-# MAGIC - Catalog, Database, TableのPermissionの変更
-# MAGIC - Quick Query, Dashboardによって迅速に分析を開始できる
-# MAGIC - Deltaテーブルか否かアイコンで確認できる
-# MAGIC など
+# MAGIC 
+# MAGIC -  
+# MAGIC -  
+# MAGIC -  
 
 # COMMAND ----------
 

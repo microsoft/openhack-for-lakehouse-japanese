@@ -1,6 +1,6 @@
 -- Databricks notebook source
 -- MAGIC %md # Hack Day 1
--- MAGIC ## Challenge1. 日別受注金額データの可視化 (Databricks SQL)  (目安 15:15~16:15)
+-- MAGIC ## Challenge1. 日別受注金額データの可視化 (Databricks SQL)  (目安 16:00~16:45)
 -- MAGIC Q1. Databricks SQLにてクエリを作成してください。<br>
 -- MAGIC Q2. Databricks SQLにて、日別受注金額に関する下記の項目を保持したDashboardを作成してください。<br>
 
@@ -24,12 +24,12 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/hackathon/dbsql-third.png' width='1000' />
+-- MAGIC <img src='https://raw.githubusercontent.com/microsoft/openhack-for-lakehouse-japanese/main/images/day1_c1__databricks_sql/dbsql-third.png' width='1000' />
 
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/hackathon/dbsql-fourth.png' width='1000' />
+-- MAGIC <img src='https://raw.githubusercontent.com/microsoft/openhack-for-lakehouse-japanese/main/images/day1_c1__databricks_sql/dbsql-fourth.png' width='1000' />
 
 -- COMMAND ----------
 
@@ -52,9 +52,9 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/hackathon/dbsql-second.png' width='800' />
+-- MAGIC <img src='https://raw.githubusercontent.com/microsoft/openhack-for-lakehouse-japanese/main/images/day1_c1__databricks_sql/dbsql-second.png' width='800' />
 
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC <img src='https://github.com/skotani-db/databricks-hackathon-jp/raw/main/hackathon/dbsql-fifth.png' width='800' />
+-- MAGIC <img src='https://raw.githubusercontent.com/microsoft/openhack-for-lakehouse-japanese/main/images/day1_c1__databricks_sql/dbsql-fifth.png' width='800' />

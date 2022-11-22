@@ -321,8 +321,24 @@ USING delta
 
 # COMMAND ----------
 
-# ToDo olist_sellers_dataset_bronze から olist_sellers_dataset_silver へデータを書き込むパイプラインを作成してください。
-<<FILL-IN>>
+# ToDo下記の処理を実行したデータフレーム（df）を作成してください
+## 1. ブロンズテーブル（olist_sellers_dataset_bronze）から主キー（`seller_id`）ごとに`_ingest_timestamp`列の最大日を抽出したサブセットを作成
+## 2. 主キー＋`_ingest_timestamp`列の条件で、1のサブセットとブロンズテーブルを結合
+## 3. ブロンズテーブルの`seller`列内のカラムを単一列カラムとして取得 
+## 4. ブロンズテーブルのデータ型をシルバーテーブルと同一のデータ型に変換
+brz_to_slv_sql = <<FILL-IN>>
+df = spark.sql(brz_to_slv_sql)
+
+# ToDo dropDuplicates関数にて、主キーの一意性を保証してください。連携日ごとの一意性が保証されないことがあるため。
+df = df.<<FILL-IN>>
+
+## 一時ビューを作成
+temp_view_name = f'_tmp_{tgt_table_name__4_2_1}'
+df.createOrReplaceTempView(temp_view_name)
+
+
+# ToDo 一時ビューからシルバーテーブル（olist_sellers_dataset_silver）に対して、MERGE文によりアップサート処理を実施してください。
+spark.sql(<<FILL-IN>>)
 
 # COMMAND ----------
 

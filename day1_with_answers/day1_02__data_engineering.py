@@ -196,10 +196,10 @@ spark.table(tgt_table_name__2_1_2).display()
 
 # MAGIC %md
 # MAGIC Answer
-# MAGIC - Catalog, Database, TableのPermissionの変更
-# MAGIC - Quick Query, Dashboardによって迅速に分析を開始できる
-# MAGIC - Deltaテーブルか否かアイコンで確認できる
-# MAGIC など
+# MAGIC 
+# MAGIC -  
+# MAGIC -  
+# MAGIC -  
 
 # COMMAND ----------
 

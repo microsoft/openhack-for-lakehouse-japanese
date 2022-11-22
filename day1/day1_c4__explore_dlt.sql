@@ -19,7 +19,7 @@
 -- MAGIC %md
 -- MAGIC 
 -- MAGIC 
--- MAGIC ## ブロンズレイヤーテーブルを宣言する（Declare Bronze Layer Tables）
+-- MAGIC ## Q1. ブロンズレイヤーテーブルを宣言する（Declare Bronze Layer Tables）
 -- MAGIC 
 -- MAGIC 以下では、ブロンズレイヤーを実装する2つのテーブルを宣言します。
 
@@ -112,7 +112,7 @@ FROM
 -- MAGIC 
 -- MAGIC 
 -- MAGIC 
--- MAGIC ## シルバーレイヤーテーブルを宣言する（Declare Silver Layer Tables）
+-- MAGIC ## Q2. シルバーレイヤーテーブルを宣言する（Declare Silver Layer Tables）
 
 -- COMMAND ----------
 
@@ -266,7 +266,7 @@ OR REFRESH LIVE TABLE dlt_order_info_gold AS (
 -- MAGIC %md
 -- MAGIC 
 -- MAGIC 
--- MAGIC ## ゴールドテーブルを宣言する（Declare Gold Table）
+-- MAGIC ## Q3. ゴールドテーブルを宣言する（Declare Gold Table）
 
 -- COMMAND ----------
 

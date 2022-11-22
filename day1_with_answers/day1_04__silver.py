@@ -173,9 +173,8 @@ USING delta
 
 # COMMAND ----------
 
-# ToDo olist_order_items_dataset_bronze から olist_order_items_dataset_sliver へデータを書き込むパイプラインを作成してください。
-# 下記の処理を実行したデータフレーム（df）を作成
-## 1. ブロンズテーブルから主キー（`order_id`,`order_item_id`,`product_id`,`seller_id`）ごとに`_ingest_timestamp`列の最大日を抽出したサブセットを作成
+# ToDo 下記の処理を実行したデータフレーム（df）を作成してください
+## 1. ブロンズテーブル（olist_order_items_dataset_bronze）から主キー（`order_id`,`order_item_id`,`product_id`,`seller_id`）ごとに`_ingest_timestamp`列の最大日を抽出したサブセットを作成
 ## 2. 主キー＋`_ingest_timestamp`列の条件で、1のサブセットとブロンズテーブルを結合
 ## 3. ブロンズテーブルのデータ型をシルバーテーブルと同一のデータ型に変換
 brz_to_slv_sql = f'''
@@ -217,17 +216,15 @@ SELECT
 '''
 df = spark.sql(brz_to_slv_sql)
 
-# dropDuplicates関数にて、主キーの一意性を保証。連携日ごとの一意性が保証されないことがあるため。
+# ToDo dropDuplicates関数にて、主キーの一意性を保証してください。連携日ごとの一意性が保証されないことがあるため。
 df = df.drop_duplicates(['order_id','order_item_id','product_id','seller_id'])
 
-# 一時ビューからシルバーテーブルに対して、MERGE文によりアップサート処理を実施してください。
-# 一時ビューの`_ingest_timestamp`列がシルバーテーブルの`_ingest_timestamp`列以降である場合のみ、UPDATE処理が実行されるようにしてください。
 ## 一時ビューを作成
 temp_view_name = f'_tmp_{tgt_table_name__4_1_2}'
 df.createOrReplaceTempView(temp_view_name)
 
 
-## Merge処理を実行
+# ToDo 一時ビューからシルバーテーブル（olist_order_items_dataset_sliver）に対して、MERGE文によりアップサート処理を実施してください。
 spark.sql(f'''
 MERGE INTO {tgt_table_name__4_1_2} AS tgt
   USING {temp_view_name} AS src

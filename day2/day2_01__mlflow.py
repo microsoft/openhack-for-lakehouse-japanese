@@ -243,6 +243,9 @@ from fbprophet import Prophet
 # MAGIC きめ細かい指定をするためには上のメソッドを使用しますが、デフォルトのパラメーター、メトリクスをロギングするので十分であれば、`mlflow.spark.autolog`によるオートロギングを利用できます。
 # MAGIC 
 # MAGIC [mlflow.spark.autolog](https://www.mlflow.org/docs/latest/python_api/mlflow.spark.html#mlflow.spark.autolog)
+# MAGIC 
+# MAGIC 
+# MAGIC [StackOverflow: Prophetのクロスバリデーションの動作について](https://stackoverflow.com/questions/63780573/trying-to-understand-fb-prophet-cross-validation)
 
 # COMMAND ----------
 

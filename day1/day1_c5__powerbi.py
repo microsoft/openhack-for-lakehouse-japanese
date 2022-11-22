@@ -24,7 +24,7 @@
 # MAGIC - Power BI は Microsoft Power Platform のサービスの一つ
 # MAGIC - Power Platform には他にもアプリケーション開発のための Power Apps, ワークフロー自動化のための Power Automate, インテリジェント仮想エージェントの Power Virtual Agents といったサービスがある
 # MAGIC 
-# MAGIC <img src="https://raw.githubusercontent.com/nakazax/oh-lakehouse-assets/main/images/day1_c5__powerbi/powerbi_overview_1.jpg" width="800">
+# MAGIC <img src="https://raw.githubusercontent.com/microsoft/openhack-for-lakehouse-japanese/main/images/day1_c5__powerbi/powerbi_overview_1.jpg" width="800">
 # MAGIC 
 # MAGIC ---
 # MAGIC ### Power BI の役割
@@ -32,7 +32,7 @@
 # MAGIC - クラウドやオンプレミス、SaaS データを Power BI に連携し、データの分析・豊富な可視化によりインサイトを導き出す
 # MAGIC - Web や Teams、PowerPoint など様々な場所でユーザーの意思決定に役立てられる
 # MAGIC 
-# MAGIC <img src="https://raw.githubusercontent.com/nakazax/oh-lakehouse-assets/main/images/day1_c5__powerbi/powerbi_overview_2.jpg" width="800">
+# MAGIC <img src="https://raw.githubusercontent.com/microsoft/openhack-for-lakehouse-japanese/main/images/day1_c5__powerbi/powerbi_overview_2.jpg" width="800">
 # MAGIC 
 # MAGIC ---
 # MAGIC ### Power BI の全体像
@@ -41,13 +41,13 @@
 # MAGIC - Power BI サービスは Power BI レポートなどのコンテンツを共有・管理するためのクラウド環境 (複数人にレポートを共有する場合はライセンスが必要)
 # MAGIC - Power BI モバイル / ブラウザにより、コンテンツを Web / モバイルで参照 / 分析できる
 # MAGIC 
-# MAGIC <img src="https://raw.githubusercontent.com/nakazax/oh-lakehouse-assets/main/images/day1_c5__powerbi/powerbi_overview_3.jpg" width="800">
+# MAGIC <img src="https://raw.githubusercontent.com/microsoft/openhack-for-lakehouse-japanese/main/images/day1_c5__powerbi/powerbi_overview_3.jpg" width="800">
 # MAGIC 
 # MAGIC ---
 # MAGIC ### Power BI の市場評価
 # MAGIC - 米国調査会社 Gartner 発表の「アナリティクス & ビジネス インテリジェンス プラットフォーム」分野の 2022 年 3 月のマジック クアドラントにて Microsoft はリーダーとして選出
 # MAGIC 
-# MAGIC <img src="https://raw.githubusercontent.com/nakazax/oh-lakehouse-assets/main/images/day1_c5__powerbi/powerbi_overview_4.jpg" width="800">
+# MAGIC <img src="https://raw.githubusercontent.com/microsoft/openhack-for-lakehouse-japanese/main/images/day1_c5__powerbi/powerbi_overview_4.jpg" width="800">
 # MAGIC 
 # MAGIC ---
 # MAGIC ### 顧客が Power BI を選択する 10 の理由
@@ -80,21 +80,21 @@
 # MAGIC - 既存の SQL ウェアハウスをクリックし「接続の詳細」タブにアクセスします
 # MAGIC - 画面下部にある「Power BI」アイコンをクリックします
 # MAGIC 
-# MAGIC <img src="https://raw.githubusercontent.com/nakazax/oh-lakehouse-assets/main/images/day1_c5__powerbi/sql_warehouse_powerbi.png" width="800">
+# MAGIC <img src="https://raw.githubusercontent.com/microsoft/openhack-for-lakehouse-japanese/main/images/day1_c5__powerbi/sql_warehouse_powerbi.png" width="800">
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC - 「パートナーに接続ダイアログ」が表示されるので「接続ファイルをダウンロード」をクリックします
 # MAGIC 
-# MAGIC <img src="https://raw.githubusercontent.com/nakazax/oh-lakehouse-assets/main/images/day1_c5__powerbi/download_pbids.png" width="600">
+# MAGIC <img src="https://raw.githubusercontent.com/microsoft/openhack-for-lakehouse-japanese/main/images/day1_c5__powerbi/download_pbids.png" width="600">
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC - PBIDS ファイルを開くための前提条件を確認するダイアログが表示されるので、前提条件を問題なく満たしている場合は「閉じる」をクリックします
 # MAGIC 
-# MAGIC <img src="https://raw.githubusercontent.com/nakazax/oh-lakehouse-assets/main/images/day1_c5__powerbi/prereq_pbids.png" width="600">
+# MAGIC <img src="https://raw.githubusercontent.com/microsoft/openhack-for-lakehouse-japanese/main/images/day1_c5__powerbi/prereq_pbids.png" width="600">
 
 # COMMAND ----------
 
@@ -103,7 +103,7 @@
 # MAGIC - PBIDS ファイルの初回オープン時に以下キャプチャのような Azure Databricks 接続の認証情報を求めるダイアログが表示されます。個人用アクセス トークンなどが選べますが、ここでは Azure Active Directory を認証情報として用います
 # MAGIC - Azure Active Directory のサインインが正常に完了したら「接続」ボタンをクリックします
 # MAGIC 
-# MAGIC <img src="https://raw.githubusercontent.com/nakazax/oh-lakehouse-assets/main/images/day1_c5__powerbi/powerbi_connect_adb.png" width="800">
+# MAGIC <img src="https://raw.githubusercontent.com/microsoft/openhack-for-lakehouse-japanese/main/images/day1_c5__powerbi/powerbi_connect_adb.png" width="800">
 
 # COMMAND ----------
 
@@ -116,14 +116,14 @@
 # MAGIC %md
 # MAGIC - ナビゲーター画面で `sales_history_gold` テーブルを選択して「読み込み」をクリックします
 # MAGIC 
-# MAGIC <img src="https://raw.githubusercontent.com/nakazax/oh-lakehouse-assets/main/images/day1_c5__powerbi/powerbi_navigator.png" width="800">
+# MAGIC <img src="https://raw.githubusercontent.com/microsoft/openhack-for-lakehouse-japanese/main/images/day1_c5__powerbi/powerbi_navigator.png" width="800">
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC - 折れ線グラフをプロット、X 軸に `purchase_date` を、Y 軸に `sales の合計` を選択します
 # MAGIC 
-# MAGIC <img src="https://raw.githubusercontent.com/nakazax/oh-lakehouse-assets/main/images/day1_c5__powerbi/powerbi_line_graph.png" width="800">
+# MAGIC <img src="https://raw.githubusercontent.com/microsoft/openhack-for-lakehouse-japanese/main/images/day1_c5__powerbi/powerbi_line_graph.png" width="800">
 
 # COMMAND ----------
 

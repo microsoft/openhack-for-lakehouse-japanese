@@ -25,9 +25,7 @@
 # MAGIC 作業中
 # MAGIC prophetインストールすると、DFが消えるのでcluster側に最初からinstall
 
-# COMMAND ----------
 
-# MAGIC %pip install fbprophet
 
 # COMMAND ----------
 
@@ -180,7 +178,7 @@ display(pd_orderitem_joinDF)
 # COMMAND ----------
 
 # DBTITLE 1,Prophetでmodel適用
-from fbprophet import Prophet
+from prophet import Prophet
 
 << FILL IN >>
 

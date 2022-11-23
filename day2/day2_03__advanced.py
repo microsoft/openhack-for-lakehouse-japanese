@@ -15,9 +15,6 @@
 # MAGIC 売上予測データを追加した状態で機械学習を行います。<br>
 # MAGIC 本ノートブックは ML ランタイムの Databricks クラスターでの実行を想定しています。<br>
 
-# COMMAND ----------
-
-# MAGIC %pip install fbprophet
 
 # COMMAND ----------
 
@@ -174,7 +171,7 @@ model.plot_components(forecast_pd_all_retry)
 
 # COMMAND ----------
 
-from fbprophet.plot import add_changepoints_to_plot
+from prophet.plot import add_changepoints_to_plot
 
 
 fig = model.plot(forecast_pd_all_retry)

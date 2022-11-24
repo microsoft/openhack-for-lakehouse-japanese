@@ -24,9 +24,6 @@
 # MAGIC 作業中
 # MAGIC prophetインストールすると、DFが消えるのでcluster側に最初からinstall
 
-# COMMAND ----------
-
-# MAGIC %pip install fbprophet
 
 # COMMAND ----------
 
@@ -188,7 +185,7 @@ display(pd_df_renamed)
 # COMMAND ----------
 
 # DBTITLE 1,Q4.Answer
-from fbprophet import Prophet
+from prophet import Prophet
 
 # instantiate the model and set parameters
 model = Prophet(
@@ -216,7 +213,7 @@ forecast_pd = model.predict(future_pd)
 
 # DBTITLE 1,Q4.Answer
 #予測
-from fbprophet import plot
+from prophet import plot
 
 plot.plot_plotly(model, forecast_pd)
 

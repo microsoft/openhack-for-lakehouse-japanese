@@ -96,6 +96,45 @@ def print__c4__db_name():
     print(f"Current Database                 : {spark.sql('SELECT current_database()').first()[0]}")
 
 
+from pyspark.sql import SparkSession
+
+def create_bronze_tbl(tbl_name,tbl_schema):
+    spark = SparkSession.builder.getOrCreate()    
+    spark.sql(f"""
+    CREATE OR REPLACE TABLE {tbl_name}
+    (
+    {tbl_schema},
+    _datasource STRING,
+    _ingest_timestamp timestamp
+    )
+    USING delta
+    """)
+
+def write_to_bronze_tbl(src_path,tgt_tbl_name):
+    spark = SparkSession.builder.getOrCreate()
+    df = (
+        spark.read.format("csv")
+        .option("header", "true")
+        .option("multiLine",'true')
+        .option("escape",'"')
+        .option("inferSchema", "False")
+        .load(src_path)
+    )
+
+    df = (
+        df.select("*", "_metadata")
+        .withColumn("_datasource", df["_metadata.file_path"])
+        .withColumn("_ingest_timestamp", df["_metadata.file_modification_time"])
+        .drop("_metadata")
+    )
+
+    (
+        df.write.format("delta")
+        .mode("append")
+        .option("mergeSchema", "true")
+        .saveAsTable(tgt_tbl_name)
+    )
+
 # COMMAND ----------
 
 if mode == "init":
@@ -113,12 +152,12 @@ if mode == "init":
 spark.sql(f"USE {database}")
 print(f"database  : {spark.sql('SELECT current_database()').first()[0]}")
 
-if mode != '2_2':
-    # 2-2以外の手順では、パーティション数のデフォルト'200'を指定
-    spark.conf.set("spark.sql.shuffle.partitions", 200)    
+if mode != '2_4':
+    # 2-4 以外の手順では、パーティション数をデフォルトに指定
+    spark.conf.unset("spark.sql.shuffle.partitions")
     
-if mode == '2_2':
-    # 2-2の手順では、ストリーミング処理を行うため、現在のsparkコア数をパーティション数として指定
+if mode == '2_4':
+    # 2-4 の手順では、ストリーミング処理を行うため、現在のsparkコア数をパーティション数として指定
     spark_core = spark.sparkContext.defaultParallelism
     spark.conf.set("spark.sql.shuffle.partitions", spark_core)
 

@@ -15,9 +15,7 @@
 # MAGIC 売上予測データを追加した状態で機械学習を行います。<br>
 # MAGIC 本ノートブックは ML ランタイムの Databricks クラスターでの実行を想定しています。<br>
 
-# COMMAND ----------
 
-# MAGIC %pip install fbprophet
 
 # COMMAND ----------
 
@@ -155,7 +153,7 @@ pd_orderitem_join_all = orderitemDF_add_all_cast.select("*").toPandas()
 # day2で作成したモデルを呼び出し、
 import mlflow.prophet
 import pandas as pd
-from fbprophet import plot
+from prophet import plot
 
 model_name = "shotkotani-sales-predict"  # ご自分のmodel nameに変更ください
 model_version = 'production'     # model_version = 'production' ## <= このようにproduction/stagingも指定可能
@@ -208,7 +206,7 @@ import mlflow.spark
 import json
 from prophet import serialize
 from prophet.diagnostics import cross_validation, performance_metrics
-from fbprophet import Prophet
+from prophet import Prophet
 
 
 ARTIFACT_PATH = "model"
@@ -308,7 +306,7 @@ model.plot_components(forecast_pd_all_retry)
 
 # COMMAND ----------
 
-from fbprophet.plot import add_changepoints_to_plot
+from prophet.plot import add_changepoints_to_plot
 
 
 fig = model.plot(forecast_pd_all_retry)

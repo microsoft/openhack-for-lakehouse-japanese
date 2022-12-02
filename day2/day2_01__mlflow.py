@@ -100,7 +100,7 @@ sales2018_DF = << FILL IN >>
 
 # COMMAND ----------
 
-# DBTITLE 1,temporaryテーブルの生成
+# DBTITLE 1,temporary view の作成
 # SQLで確認するために、一時テーブルの生成
 << FILL IN >>
 

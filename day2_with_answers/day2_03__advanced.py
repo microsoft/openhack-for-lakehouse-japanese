@@ -15,8 +15,6 @@
 # MAGIC 売上予測データを追加した状態で機械学習を行います。<br>
 # MAGIC 本ノートブックは ML ランタイムの Databricks クラスターでの実行を想定しています。<br>
 
-
-
 # COMMAND ----------
 
 # MAGIC %run ./includes/read_variable
@@ -25,7 +23,7 @@
 
 # DBTITLE 1,Define valiables
 # データベース名を生成
-db_name = f'olist_db_{user_name}' # feature storeに登録したデータベース名を指定する
+db_name = f'olist_db_{user_name}'
 spark.sql(f"USE {db_name}")
 
 # データベースを表示
@@ -34,7 +32,7 @@ print(f"database_name: {db_name}")
 # COMMAND ----------
 
 # MAGIC %md ## Q1. Dataload復習
-# MAGIC - 昨日作成したdelta table(sales_history_gold)から、Dataframe : orderitem_joinDFとしてreadを行なってください
+# MAGIC - delta table(sales_history_gold)から、Dataframe : orderitem_joinDFとしてreadを行なってください
 # MAGIC 
 # MAGIC - orderitemDF_add_allとして、sourcepath配下にある20180830_olist_item_sales.csvをreadしてください
 # MAGIC - orderitemDF_add2018として、sourcepath配下にある2018_olist_item_sales.csvをreadしてください
@@ -171,8 +169,8 @@ plot.plot_plotly(model, forecast_pd_all,trend=True, changepoints=True)
 
 # COMMAND ----------
 
-# DBTITLE 1,実際の売上との比較は、、、
-display(pd_orderitem_join_all)
+# DBTITLE 1,実際の売上との比較
+display(forecast_pd_all)
 
 # COMMAND ----------
 

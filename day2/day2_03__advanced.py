@@ -130,7 +130,7 @@ forecast_pd_all = << FILL IN >>
 # COMMAND ----------
 
 # DBTITLE 1,実際の売上との比較
-display(forecast_pd_all)
+display(pd_orderitem_join_all)
 
 # COMMAND ----------
 

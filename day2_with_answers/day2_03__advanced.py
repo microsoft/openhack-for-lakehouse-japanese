@@ -170,7 +170,7 @@ plot.plot_plotly(model, forecast_pd_all,trend=True, changepoints=True)
 # COMMAND ----------
 
 # DBTITLE 1,実際の売上との比較
-display(pd_orderitem_join_allforecast_pd_all)
+display(pd_orderitem_join_all)
 
 # COMMAND ----------
 

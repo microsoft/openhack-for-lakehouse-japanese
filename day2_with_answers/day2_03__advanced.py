@@ -141,7 +141,7 @@ pd_orderitem_join_all = orderitemDF_add_all_cast.select("*").toPandas()
 # COMMAND ----------
 
 # MAGIC %md ## Q5. Model呼び出し
-# MAGIC 昨日作成した予測モデルを呼び出して、pd_orderitem_join_allに適用し、visualizeしてください。
+# MAGIC 昨日作成した予測モデルを呼び出して、pd_orderitem_join_all に適用し、visualizeしてください。
 # MAGIC 
 # MAGIC https://docs.databricks.com/applications/mlflow/model-registry-example.html#load-versions-of-the-registered-model-using-the-api
 

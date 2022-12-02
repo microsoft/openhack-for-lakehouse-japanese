@@ -4,7 +4,7 @@
 # MAGIC ### 本ノートブックの目的：MLflowを使ったモデル開発について理解を深める
 # MAGIC Q1. ゴールドテーブルをロードする<br>
 # MAGIC Q2. データをfiltering<br>
-# MAGIC Q3. temporary tebleの作成<br>
+# MAGIC Q3. temporary view の作成<br>
 # MAGIC Q4. prophetのmodel作成<br>
 # MAGIC Q5. mlflowで管理
 # MAGIC 
@@ -17,13 +17,6 @@
 
 # MAGIC %md 
 # MAGIC 加工したデータを使って、売上データの予測を手動で行います
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC 作業中
-# MAGIC prophetインストールすると、DFが消えるのでcluster側に最初からinstall
-
 
 # COMMAND ----------
 
@@ -101,14 +94,18 @@ sales2018_DF = df_renamed \
 
 # COMMAND ----------
 
-# MAGIC %md ## Q3. temporary tebleの作成
+# MAGIC %md ## Q3. temporary viewの作成
 # MAGIC 
-# MAGIC SQLで確認するために、一時テーブルの生成を行なってください
+# MAGIC SQLで確認するために、一時ビューの生成を行なってください
+# MAGIC 
+# MAGIC 参考リンク
+# MAGIC 
+# MAGIC - [一時ビューとは - Azure Databricks | Microsoft Learn](https://learn.microsoft.com/ja-jp/azure/databricks/lakehouse/data-objects#--what-is-a-temporary-view)
 
 # COMMAND ----------
 
 # DBTITLE 1,Q3.Answer
-# SQLで確認するために、一時テーブルの生成
+# SQLで確認するために、一時ビューの生成
 sales2017_DF.createOrReplaceTempView("2017_sales")
 sales2018_DF.createOrReplaceTempView("2018_sales")
 
@@ -343,6 +340,7 @@ ml_flow_forecast = loaded_model.predict(loaded_model.make_future_dataframe(perio
 # COMMAND ----------
 
 #予測
+from prophet import plot
 plot.plot_plotly(model, ml_flow_forecast)
 
 # COMMAND ----------

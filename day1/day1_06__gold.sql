@@ -31,7 +31,7 @@
 -- COMMAND ----------
 
 -- MAGIC %sql CREATE
--- MAGIC OR REPLACE TABLE order_info_silver AS
+-- MAGIC OR REPLACE TABLE order_info_gold AS
 -- MAGIC SELECT
 -- MAGIC   a.order_id,
 -- MAGIC   seller_id,
@@ -51,7 +51,7 @@
 -- MAGIC SELECT
 -- MAGIC   *
 -- MAGIC FROM
--- MAGIC   order_info_silver
+-- MAGIC   order_info_gold
 -- MAGIC LIMIT
 -- MAGIC   5;
 
@@ -64,7 +64,7 @@
 
 -- MAGIC %md
 -- MAGIC ToDo
--- MAGIC - **`order_info_silver`** を`date`で集計し、`product_sales`をSUMし新規のカラム`sales`を作成する
+-- MAGIC - **`order_info_gold`** を`date`で集計し、`product_sales`をSUMし新規のカラム`sales`を作成する
 -- MAGIC -  **`sales_history_gold`** を `purchase_date`をキーに昇順で並び替えてください
 -- MAGIC - `purchase_date`, `sales`をカラムとする売上の時系列データの新規テーブル **`sales_history_gold`** を作成してください
 

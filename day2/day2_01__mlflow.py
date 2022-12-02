@@ -90,13 +90,9 @@ sales2018_DF = << FILL IN >>
 
 # COMMAND ----------
 
-# MAGIC %md ## Q3. temporary view の作成
+# MAGIC %md ## Q3. temporary viewの作成
 # MAGIC 
 # MAGIC SQLで確認するために、一時ビューの生成を行なってください
-# MAGIC 
-# MAGIC 参考リンク
-# MAGIC 
-# MAGIC - [一時ビューとは - Azure Databricks | Microsoft Learn](https://learn.microsoft.com/ja-jp/azure/databricks/lakehouse/data-objects#--what-is-a-temporary-view)
 
 # COMMAND ----------
 

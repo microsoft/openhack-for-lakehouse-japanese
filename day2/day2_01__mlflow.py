@@ -4,7 +4,7 @@
 # MAGIC ### 本ノートブックの目的：MLflowを使ったモデル開発について理解を深める
 # MAGIC Q1. ゴールドテーブルをロードする<br>
 # MAGIC Q2. データをfiltering<br>
-# MAGIC Q3. temporary tebleの作成<br>
+# MAGIC Q3. temporary view の作成<br>
 # MAGIC Q4. prophetのmodel作成<br>
 # MAGIC Q5. mlflowで管理
 # MAGIC 
@@ -18,14 +18,6 @@
 # MAGIC %md
 # MAGIC 
 # MAGIC 加工したデータを使って、売上データの予測を手動で行います
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC 作業中
-# MAGIC prophetインストールすると、DFが消えるのでcluster側に最初からinstall
-
-
 
 # COMMAND ----------
 
@@ -98,13 +90,13 @@ sales2018_DF = << FILL IN >>
 
 # COMMAND ----------
 
-# MAGIC %md ## Q3. temporary tebleの作成
+# MAGIC %md ## Q3. temporary viewの作成
 # MAGIC 
-# MAGIC SQLで確認するために、一時テーブルの生成を行なってください
+# MAGIC SQLで確認するために、一時ビューの生成を行なってください
 
 # COMMAND ----------
 
-# DBTITLE 1,temporaryテーブルの生成
+# DBTITLE 1,temporary view の作成
 # SQLで確認するために、一時テーブルの生成
 << FILL IN >>
 
@@ -163,7 +155,7 @@ pd_df_renamed = df_renamed.select("*").toPandas()
 # COMMAND ----------
 
 # DBTITLE 1,display()で確認
-display(pd_orderitem_joinDF)
+display(pd_df_renamed)
 
 # COMMAND ----------
 
@@ -258,7 +250,7 @@ from prophet.diagnostics import cross_validation, performance_metrics
 
 ARTIFACT_PATH = "model"
 experiment_name = f"/Users/{username_raw}/databricks_automl/project-olist-sales-forcast-2nd"
-mlflow.set_experiment(experiment_name)
+# mlflow.set_experiment(experiment_name)
 
 def extract_params(pr_model):
     return {attr: getattr(pr_model, attr) for attr in serialize.SIMPLE_ATTRIBUTES}
@@ -298,6 +290,7 @@ ml_flow_forecast = loaded_model.predict(loaded_model.make_future_dataframe(perio
 # COMMAND ----------
 
 #予測
+from prophet import plot
 plot.plot_plotly(model, ml_flow_forecast)
 
 # COMMAND ----------

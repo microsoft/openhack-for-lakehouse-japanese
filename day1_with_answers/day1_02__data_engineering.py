@@ -533,7 +533,7 @@ dbutils.fs.rm(checkpoint_path__2_4_2, True)
 # COMMAND ----------
 
 # ToDo Databricks Auto Loader によりデータの書き込みを実施してください。
-# Databricks Auto loaderにて、変数`schema__2_4_2`をスキーマに指定して、`src_file_path__2_4_1`変数をCSVファイルのソースとして読み込みを実施。
+# Databricks Auto loaderにて、変数`schema__2_4_2`をスキーマに指定して、`src_file_path__2_4_2`変数をCSVファイルのソースとして読み込みを実施。
 df__2_4_2 = (
     spark.readStream.format("cloudFiles")
     .option("cloudFiles.format", "csv")

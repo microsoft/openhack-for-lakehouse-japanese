@@ -202,7 +202,7 @@ display(spark.table(tgt_table_name__4_1_2))
 
 # COMMAND ----------
 
-# 複数回書き込みを実施しても、98,666 レコードとなることを確認
+# 複数回書き込みを実施しても、112,650 レコードとなることを確認
 print(spark.table(tgt_table_name__4_1_2).count())
 
 # COMMAND ----------

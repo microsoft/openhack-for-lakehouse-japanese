@@ -513,18 +513,17 @@ print(spark.table(tgt_table_name__4_c_2).count())
 # MAGIC %md
 # MAGIC #### ToDo 未実施の Bronze テーブルをソースとして Silver テーブルへのパイプラインを作成してください。
 # MAGIC 
-# MAGIC - olist_customers_dataset_bronze
-# MAGIC - olist_geolocation_dataset_bronze
-# MAGIC - olist_order_payments_dataset_bronze
-# MAGIC - olist_products_dataset_bronze
+# MAGIC - olist_customers_dataset_bronze -> olist_customers_dataset_silver
+# MAGIC - olist_order_payments_dataset_bronze -> olist_order_payments_dataset_silver
+# MAGIC - olist_products_dataset_bronze -> olist_products_dataset_silver
 # MAGIC 
 # MAGIC 下記については、主キー列がない場合の対応を実施してください。
 # MAGIC 
-# MAGIC - product_category_name_translation_bronze
+# MAGIC - product_category_name_translation_bronze -> product_category_name_translation_silver
 
 # COMMAND ----------
 
-# ToDO `olist_customers_dataset_bronze` テーブルへ書き込み
+# ToDO `olist_customers_dataset_silver` テーブルへ書き込み
 tgt_table_name__4_c_1 = 'olist_customers_dataset_silver'
 src_table_name__4_c_1 = 'olist_customers_dataset_bronze'
 
@@ -608,7 +607,7 @@ print(spark.table(tgt_table_name__4_c_1).count())
 
 # COMMAND ----------
 
-# ToDO `olist_customers_dataset_bronze` テーブルへ書き込み
+# ToDO `olist_order_payments_dataset_silver` テーブルへ書き込み
 tgt_table_name__4_c_3 = 'olist_order_payments_dataset_silver'
 src_table_name__4_c_3 = 'olist_order_payments_dataset_bronze'
 
@@ -688,7 +687,7 @@ print(spark.table(tgt_table_name__4_c_3).count())
 
 # COMMAND ----------
 
-# ToDO `olist_customers_dataset_bronze` テーブルへ書き込み
+# ToDO `olist_products_dataset_silver` テーブルへ書き込み
 tgt_table_name__4_c_4 = 'olist_products_dataset_silver'
 src_table_name__4_c_4 = 'olist_products_dataset_bronze'
 
@@ -776,7 +775,7 @@ print(spark.table(tgt_table_name__4_c_4).count())
 
 # COMMAND ----------
 
-# ToDO `olist_customers_dataset_bronze` テーブルへ書き込み
+# ToDO `product_category_name_translation_silver` テーブルへ書き込み
 tgt_table_name__4_c_5 = 'product_category_name_translation_silver'
 src_table_name__4_c_5 = 'product_category_name_translation_bronze'
 

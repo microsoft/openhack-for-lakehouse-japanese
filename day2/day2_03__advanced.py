@@ -15,7 +15,6 @@
 # MAGIC 売上予測データを追加した状態で機械学習を行います。<br>
 # MAGIC 本ノートブックは ML ランタイムの Databricks クラスターでの実行を想定しています。<br>
 
-
 # COMMAND ----------
 
 # MAGIC %run ./includes/read_variable
@@ -24,7 +23,7 @@
 
 # DBTITLE 1,Define valiables
 # データベース名を生成
-db_name = dbName = f'olist_db_{user_name}'
+db_name = f'olist_db_{user_name}'
 spark.sql(f"USE {db_name}")
 
 # データベースを表示
@@ -33,7 +32,7 @@ print(f"database_name: {db_name}")
 # COMMAND ----------
 
 # MAGIC %md ## Q1. Dataload復習
-# MAGIC - 昨日作成したdelta table(item_sales)から、Dataframe : orderitem_joinDFとしてreadを行なってください
+# MAGIC - delta table(sales_history_gold)から、Dataframe : orderitem_joinDFとしてreadを行なってください
 # MAGIC 
 # MAGIC - orderitemDF_add_allとして、sourcepath配下にある20180830_olist_item_sales.csvをreadしてください
 # MAGIC - orderitemDF_add2018として、sourcepath配下にある2018_olist_item_sales.csvをreadしてください
@@ -104,12 +103,12 @@ orderitemDF_add2021_cast.printSchema()
 # prophetで扱うために、dataframeをpandas dataframeに変換
 import pandas as pd
 
-pd_orderitem_join_all_union = << FILL IN >>
+pd_orderitem_join_all = << FILL IN >>
 
 # COMMAND ----------
 
 # MAGIC %md ## Q5. Model呼び出し
-# MAGIC 昨日作成した予測モデルを呼び出して、pd_orderitem_join_allに適用し、visualizeしてください。
+# MAGIC 昨日作成した予測モデルを呼び出して、pd_orderitem_join_all に適用し、visualizeしてください。
 # MAGIC 
 # MAGIC https://docs.databricks.com/applications/mlflow/model-registry-example.html#load-versions-of-the-registered-model-using-the-api
 

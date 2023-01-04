@@ -87,11 +87,13 @@ brz_to_slv_sql = f'''
 with slv_records (
 SELECT
   order_id,
+  customer_id,
   MAX(_ingest_timestamp) AS max_ingest_timestamp
   FROM
     {src_table_name__4_1_1}
   GROUP BY
-    order_id      
+    order_id,
+    customer_id
 )
 SELECT
   brz.`order_id`,
@@ -110,12 +112,13 @@ SELECT
     slv_records AS slv
     ON 
       brz.order_id =  slv.order_id
+      AND brz.customer_id =  slv.customer_id
       AND brz._ingest_timestamp =  slv.max_ingest_timestamp
 '''
 df = spark.sql(brz_to_slv_sql)
 
 # dropDuplicates関数にて、主キーの一意性を保証。連携日ごとの一意性が保証されないことがあるため。
-df = df.drop_duplicates(['order_id'])
+df = df.drop_duplicates(['order_id', 'customer_id'])
 
 # 一時ビューからシルバーテーブルに対して、MERGE文によりアップサート処理を実施。
 # 一時ビューの`_ingest_timestamp`列がシルバーテーブルの`_ingest_timestamp`列以降である場合のみ、UPDATE処理が実行。
@@ -130,6 +133,7 @@ MERGE INTO {tgt_table_name__4_1_1} AS tgt
   USING {temp_view_name} AS src
   
   ON tgt.order_id = src.order_id
+  AND tgt.customer_id = src.customer_id
   
   WHEN MATCHED
   AND tgt._ingest_timestamp < src._ingest_timestamp
@@ -249,7 +253,7 @@ display(spark.table(tgt_table_name__4_1_2))
 
 # COMMAND ----------
 
-# 複数回書き込みを実施しても、98,666 レコードとなることを確認
+# 複数回書き込みを実施しても、112,650 レコードとなることを確認
 print(spark.table(tgt_table_name__4_1_2).count())
 
 # COMMAND ----------
@@ -509,18 +513,17 @@ print(spark.table(tgt_table_name__4_c_2).count())
 # MAGIC %md
 # MAGIC #### ToDo 未実施の Bronze テーブルをソースとして Silver テーブルへのパイプラインを作成してください。
 # MAGIC 
-# MAGIC - olist_customers_dataset_bronze
-# MAGIC - olist_geolocation_dataset_bronze
-# MAGIC - olist_order_payments_dataset_bronze
-# MAGIC - olist_products_dataset_bronze
+# MAGIC - olist_customers_dataset_bronze -> olist_customers_dataset_silver
+# MAGIC - olist_order_payments_dataset_bronze -> olist_order_payments_dataset_silver
+# MAGIC - olist_products_dataset_bronze -> olist_products_dataset_silver
 # MAGIC 
 # MAGIC 下記については、主キー列がない場合の対応を実施してください。
 # MAGIC 
-# MAGIC - product_category_name_translation_bronze
+# MAGIC - product_category_name_translation_bronze -> product_category_name_translation_silver
 
 # COMMAND ----------
 
-# ToDO `olist_customers_dataset_bronze` テーブルへ書き込み
+# ToDO `olist_customers_dataset_silver` テーブルへ書き込み
 tgt_table_name__4_c_1 = 'olist_customers_dataset_silver'
 src_table_name__4_c_1 = 'olist_customers_dataset_bronze'
 
@@ -604,7 +607,7 @@ print(spark.table(tgt_table_name__4_c_1).count())
 
 # COMMAND ----------
 
-# ToDO `olist_customers_dataset_bronze` テーブルへ書き込み
+# ToDO `olist_order_payments_dataset_silver` テーブルへ書き込み
 tgt_table_name__4_c_3 = 'olist_order_payments_dataset_silver'
 src_table_name__4_c_3 = 'olist_order_payments_dataset_bronze'
 
@@ -684,7 +687,7 @@ print(spark.table(tgt_table_name__4_c_3).count())
 
 # COMMAND ----------
 
-# ToDO `olist_customers_dataset_bronze` テーブルへ書き込み
+# ToDO `olist_products_dataset_silver` テーブルへ書き込み
 tgt_table_name__4_c_4 = 'olist_products_dataset_silver'
 src_table_name__4_c_4 = 'olist_products_dataset_bronze'
 
@@ -772,7 +775,7 @@ print(spark.table(tgt_table_name__4_c_4).count())
 
 # COMMAND ----------
 
-# ToDO `olist_customers_dataset_bronze` テーブルへ書き込み
+# ToDO `product_category_name_translation_silver` テーブルへ書き込み
 tgt_table_name__4_c_5 = 'product_category_name_translation_silver'
 src_table_name__4_c_5 = 'product_category_name_translation_bronze'
 

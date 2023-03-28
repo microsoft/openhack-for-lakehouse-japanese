@@ -20,7 +20,7 @@ variable "tags" {
 
 variable "prefix" {
   type    = string
-  default = "oph-dev"
+  default = "oph-lh"
 }
 
 variable "is_trainer" {

@@ -31,6 +31,7 @@ STUDENT_ARM_SUBSCRIPTION_ID=<生徒用サブスクリプションID>
 
 - ./code/student_rg_list.txt 上に生徒用リソースグループ名を記入します。
 - - 必要に応じて、./environments/dev/trainer.tfvars の内容でトレーナー用リソースグループを変更することが可能です。
+- - main.tfのコメントアウトを調整してリソースグループから作成することが可能です。
 - .devcontainer に基づいてdevcontainer を立ち上げます。
 - 以下のコマンドを実行します。実行した際にaz loginが試行された場合は、対象のテナントでログインをしてください。
 

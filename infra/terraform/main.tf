@@ -19,24 +19,25 @@ locals {
   datalakename                  = replace(lower(format("%smetastore%s", var.prefix, local.suffix)), "-", "")
 }
 
-resource "azurerm_resource_group" "this" {
-  location = var.resource_group_location
-  name     = var.rg_name
-  tags     = var.tags
-}
+# リソースグループが存在する場合はコメントアウト
+# resource "azurerm_resource_group" "this" {
+#   location = var.resource_group_location
+#   name     = var.rg_name
+#   tags     = var.tags
+# }
 
 module "datafactory" {
   source   = "./modules/services/datafactory"
   name     = local.datafactoryName
   location = var.resource_group_location
-  rg_name  = azurerm_resource_group.this.name
+  rg_name  = var.rg_name
   tags     = var.tags
 }
 module "databricks" {
   source   = "./modules/services/databricks"
   name     = local.databricksName
   location = var.resource_group_location
-  rg_name  = azurerm_resource_group.this.name
+  rg_name  = var.rg_name
 }
 
 module "assign_rbac_databricks" {
@@ -60,7 +61,7 @@ module "datalake" {
 
   source          = "./modules/services/datalake"
   name            = local.datalakename
-  rg_name         = azurerm_resource_group.this.name
+  rg_name         = var.rg_name
   location        = var.resource_group_location
   filesystemNames = ["metastore-jpeast"]
 }
@@ -70,7 +71,7 @@ module "databricks_accessconnector" {
   source   = "./modules/services/databricks_accessconnector"
   name     = local.databricksAccessConnectorName
   location = var.resource_group_location
-  rg_name  = azurerm_resource_group.this.name
+  rg_name  = var.rg_name
 
 }
 module "assign_rbac_datalake" {

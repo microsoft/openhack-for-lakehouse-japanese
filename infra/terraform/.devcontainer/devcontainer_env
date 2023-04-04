@@ -1,6 +1,6 @@
 # the target azure subscription
-ARM_SUBSCRIPTION_ID=
-
+TRAINER_ARM_SUBSCRIPTION_ID=
+STUDENT_ARM_SUBSCRIPTION_ID=
 # the name of the resource group where the storage account for the backend should be created
 TF_BACKEND_RESOURCE_GROUP=
 

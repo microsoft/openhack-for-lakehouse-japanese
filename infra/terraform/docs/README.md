@@ -25,7 +25,8 @@
 - .devcontainer/devcontainer.env を作成し、以下を追加する
 
 ```
-ARM_SUBSCRIPTION_ID=<サブスクリプションID>
+TRAINER_ARM_SUBSCRIPTION_ID=<講師用サブスクリプションID>
+STUDENT_ARM_SUBSCRIPTION_ID=<生徒用サブスクリプションID>
 ```
 
 - ./code/student_rg_list.txt 上に生徒用リソースグループ名を記入します。
@@ -38,3 +39,5 @@ ARM_SUBSCRIPTION_ID=<サブスクリプションID>
 bash ./code/deploy.sh
 
 ```
+
+- - 必要に応じてdeploy.sh 内で mode="plan" に変更することでterraform planに変更することができます。

@@ -64,7 +64,3 @@ class AddtionalDataSources:
             out_path = value['out_path']
             cleaned_data = inspect.cleandoc(value['src'])
             dbutils.fs.put(out_path, cleaned_data, True)
-
-# COMMAND ----------
-
-
